@@ -13,6 +13,7 @@ export const defaultHome = {
     subheadline: "Your blood can be someone's second chance.",
     description:
       'Every drop you donate helps save lives, supports families, and builds a stronger community.',
+    backgroundImage: null,
     backgroundVideo: '',
     primaryCta: { label: 'Donate Blood', href: '/donate' },
     secondaryCta: { label: 'Find a Blood Camp', href: '#camps' },
