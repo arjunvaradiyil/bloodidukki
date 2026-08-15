@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-blood: #e11d2e;
+  --color-blood-deep: #b01020;
+  --color-blood-wave: #c41628;
+  --color-ink: #0b0b0d;
+  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --animate-hero-ken: hero-ken 28s ease-in-out infinite alternate;
+  --animate-ekg: ekg-draw 2.8s ease-in-out infinite;
+  --animate-heartbeat: heartbeat 1.4s ease-in-out infinite;
+  --animate-rise: rise-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+html:has(.hero-lock),
+html:has(.hero-lock) body {
+  height: 100%;
+  overflow: hidden;
+}
+
+@keyframes hero-ken {
+  from {
+    transform: scale(1.04) translate3d(0, 0, 0);
+  }
+  to {
+    transform: scale(1.1) translate3d(-1.5%, -1%, 0);
+  }
+}
+
+@keyframes ekg-draw {
+  0% {
+    stroke-dashoffset: 210;
+    opacity: 0.35;
+  }
+  35%,
+  70% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: -28;
+    opacity: 0.4;
+  }
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.12);
+  }
+  40% {
+    transform: scale(0.96);
+  }
+  55% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
