@@ -74,9 +74,9 @@ export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
               height={40}
               className="size-10 shrink-0 bg-white object-contain"
             />
-            <span className="flex flex-col leading-none">
-              <span className="font-display text-[0.95rem] font-extrabold tracking-[0.14em] text-[#1a1113]">DYFI</span>
-              <span className="mt-[0.22rem] font-display text-[0.62rem] font-bold tracking-[0.2em] text-blood">IDUKKI</span>
+            <span className="font-display text-[0.95rem] font-extrabold tracking-[0.12em] leading-none">
+              <span className="text-[#1a1113]">DYFI</span>{' '}
+              <span className="text-blood">IDUKKI</span>
             </span>
           </Link>
 
