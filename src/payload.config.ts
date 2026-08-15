@@ -27,13 +27,15 @@ export default buildConfig({
   collections: [Users, Media, Donations],
   globals: [Header, Home],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret:
+    process.env.PAYLOAD_SECRET ||
+    (process.env.NEXT_PHASE === 'phase-production-build' ? 'build-placeholder' : ''),
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: sqliteAdapter({
     client: {
-      url: process.env.DATABASE_URL || '',
+      url: process.env.DATABASE_URL || 'file:./.db',
     },
   }),
   sharp,

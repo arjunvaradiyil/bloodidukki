@@ -1,11 +1,11 @@
-import { getPayload } from 'payload'
 import { defaultHeader } from '@/lib/defaults'
-import config from '@/payload.config'
+import { getPayloadClient } from '@/lib/payload-client'
 
 export async function getHeaderProps() {
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const headerDoc = await payload.findGlobal({ slug: 'header', depth: 1 }).catch(() => null)
+  const payload = await getPayloadClient()
+  const headerDoc = payload
+    ? await payload.findGlobal({ slug: 'header', depth: 1 }).catch(() => null)
+    : null
 
   return {
     logoTextPrimary: headerDoc?.logoTextPrimary || defaultHeader.logoTextPrimary,

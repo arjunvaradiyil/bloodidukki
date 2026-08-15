@@ -1,8 +1,7 @@
-import { getPayload } from 'payload'
 import { defaultHome, type StatIcon } from '@/lib/defaults'
 import { getMediaUrl } from '@/lib/media'
+import { getPayloadClient } from '@/lib/payload-client'
 import { getHeaderProps } from '@/lib/site-header'
-import config from '@/payload.config'
 
 export type HomeHeroView = {
   headlinePrimary: string
@@ -22,11 +21,10 @@ export type HomeHeroView = {
 }
 
 export async function getHomeView() {
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
+  const payload = await getPayloadClient()
   const [header, homeDoc] = await Promise.all([
     getHeaderProps(),
-    payload.findGlobal({ slug: 'home', depth: 2 }).catch(() => null),
+    payload ? payload.findGlobal({ slug: 'home', depth: 2 }).catch(() => null) : null,
   ])
 
   const hero = homeDoc?.hero || defaultHome.hero
