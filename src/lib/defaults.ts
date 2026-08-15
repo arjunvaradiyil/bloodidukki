@@ -1,7 +1,11 @@
 export const defaultHeader = {
-  logoTextPrimary: 'DONATE',
-  logoTextAccent: 'BLOOD',
-  navItems: [{ label: 'Home', href: '#home' }],
+  logoTextPrimary: 'DYFI',
+  logoTextAccent: 'IDUKKI',
+  navItems: [
+    { label: 'Find Hospitals', href: '#' },
+    { label: 'Request for Blood', href: '#' },
+    { label: 'Contact Us', href: '#' },
+  ],
   ctaLabel: 'Donate Now',
   ctaHref: '/donate',
 }
@@ -16,7 +20,7 @@ export const defaultHome = {
     backgroundImage: null,
     backgroundVideo: '',
     primaryCta: { label: 'Donate Blood', href: '/donate' },
-    secondaryCta: { label: 'Find a Blood Camp', href: '#camps' },
+    secondaryCta: { label: 'Contact Us', href: '/contact' },
   },
   stats: [
     { icon: 'drop' as const, value: '1 Pint', label: 'Can save up to 3 lives' },
@@ -76,7 +80,7 @@ export const defaultHome = {
   contact: {
     title: 'Contact',
     body: 'Ready to donate or host a camp? Reach out and we’ll help you get started.',
-    email: 'hello@donateblood.org',
+    email: 'dyfiidukki@gmail.com',
     phone: '+91 98765 43210',
   },
 }

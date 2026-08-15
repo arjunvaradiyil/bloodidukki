@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
 import type { ReactNode } from 'react'
 import { DropIcon, PinIcon, StatIcon } from '@/components/Icons'
@@ -71,7 +70,11 @@ export function Hero({
   form,
   onDonate,
 }: HeroProps) {
-  const imageSrc = backgroundImageUrl || '/images/hero-bg.jpg'
+  const imageSrc =
+    backgroundImageUrl && (backgroundImageUrl.startsWith('/') || backgroundImageUrl.startsWith('http'))
+      ? backgroundImageUrl
+      : '/images/hero-bg.jpg'
+
   const copy = (
     <>
       <h1
@@ -107,12 +110,12 @@ export function Hero({
   return (
     <section
       className={cn(
-        'relative isolate grid min-h-screen min-h-dvh grid-rows-[minmax(0,1fr)_auto] overflow-hidden pt-[calc(5.25rem+0.5rem)]',
+        'relative isolate grid min-h-screen min-h-dvh grid-rows-[minmax(0,1fr)_auto] overflow-hidden pt-[calc(5.5rem+0.75rem)]',
         form && 'max-lg:min-h-0 max-lg:overflow-visible',
       )}
       id="home"
     >
-      <div className="absolute inset-0 -z-20" aria-hidden="true">
+      <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         {backgroundVideoUrl ? (
           <video
             className="h-full w-full animate-hero-ken object-cover motion-reduce:animate-none"
@@ -120,21 +123,21 @@ export function Hero({
             muted
             loop
             playsInline
-            poster={imageSrc}
+            poster="/images/hero-bg.jpg"
           >
             <source src={backgroundVideoUrl} />
           </video>
         ) : (
-          <Image
+          <img
             src={imageSrc}
             alt=""
-            fill
-            priority
-            className="animate-hero-ken object-cover motion-reduce:animate-none"
-            sizes="100vw"
+            className="absolute inset-0 h-full w-full animate-hero-ken object-cover motion-reduce:animate-none"
+            onError={(event) => {
+              event.currentTarget.src = '/images/hero-bg.jpg'
+            }}
           />
         )}
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,4,6,0.88)_0%,rgba(8,4,6,0.55)_42%,rgba(8,4,6,0.28)_72%,rgba(8,4,6,0.45)_100%),linear-gradient(180deg,rgba(0,0,0,0.35)_0%,rgba(0,0,0,0.15)_35%,rgba(0,0,0,0.55)_78%,rgba(0,0,0,0.75)_100%)]" />
+        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,4,6,0.72)_0%,rgba(8,4,6,0.38)_45%,rgba(8,4,6,0.22)_100%),linear-gradient(180deg,rgba(0,0,0,0.28)_0%,rgba(0,0,0,0.12)_40%,rgba(0,0,0,0.45)_100%)]" />
       </div>
 
       {form ? (
@@ -197,7 +200,7 @@ export function Hero({
               </Link>
             )}
             <a
-              href={secondaryCta.href}
+              href={secondaryCta.href || '/contact'}
               className={cn(
                 btnBase,
                 btnGhost,

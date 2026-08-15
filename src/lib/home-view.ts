@@ -1,6 +1,7 @@
+import { cache } from 'react'
 import { defaultHome, type StatIcon } from '@/lib/defaults'
 import { getMediaUrl } from '@/lib/media'
-import { getPayloadClient } from '@/lib/payload-client'
+import { getPayloadClient, withTimeout } from '@/lib/payload-client'
 import { getHeaderProps } from '@/lib/site-header'
 
 export type HomeHeroView = {
@@ -20,11 +21,11 @@ export type HomeHeroView = {
   }[]
 }
 
-export async function getHomeView() {
-  const payload = await getPayloadClient()
+export const getHomeView = cache(async () => {
+  const payload = await withTimeout(getPayloadClient(), 800, null)
   const [header, homeDoc] = await Promise.all([
     getHeaderProps(),
-    payload ? payload.findGlobal({ slug: 'home', depth: 2 }).catch(() => null) : null,
+    payload ? withTimeout(payload.findGlobal({ slug: 'home', depth: 2 }), 800, null) : null,
   ])
 
   const hero = homeDoc?.hero || defaultHome.hero
@@ -52,10 +53,10 @@ export async function getHomeView() {
         href: '/donate',
       },
       secondaryCta: {
-        label: hero.secondaryCta?.label || defaultHome.hero.secondaryCta.label,
-        href: hero.secondaryCta?.href || defaultHome.hero.secondaryCta.href,
+        label: defaultHome.hero.secondaryCta.label,
+        href: defaultHome.hero.secondaryCta.href,
       },
       stats,
     } satisfies HomeHeroView,
   }
-}
+})

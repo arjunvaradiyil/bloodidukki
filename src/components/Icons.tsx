@@ -55,6 +55,28 @@ export function PeopleIcon({ className }: IconProps) {
   )
 }
 
+export function SearchIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.25" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M16 16.5 20.2 20.7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  )
+}
+
+export function PhoneIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M7.2 3.8h3.1l1.2 3.1-1.9 1.2a12.4 12.4 0 0 0 6.3 6.3l1.2-1.9 3.1 1.2v3.1c0 .8-.7 1.5-1.5 1.5C9.9 18.3 5.7 14.1 5.7 5.3c0-.8.7-1.5 1.5-1.5Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 export function PinIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">

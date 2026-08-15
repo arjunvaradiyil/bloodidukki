@@ -2,56 +2,43 @@
 
 import { getPayload, ValidationError } from 'payload'
 import config from '@payload-config'
-import { BLOOD_GROUPS, BLOCKS, DISTRICT, GENDERS } from '@/lib/idukki'
-import { validateDonation, valuesFromFormData } from '@/lib/donate-validation'
+import { contactValuesFromFormData, validateContact } from '@/lib/contact-validation'
 
-export type DonateState = {
+export type ContactState = {
   ok: boolean
   error: string | null
   fieldErrors?: Record<string, string>
 }
 
-export async function submitDonation(
-  _prev: DonateState,
+export async function submitContact(
+  _prev: ContactState,
   formData: FormData,
-): Promise<DonateState> {
+): Promise<ContactState> {
   if (String(formData.get('company') ?? '').trim()) {
     return { ok: true, error: null }
   }
 
-  const values = valuesFromFormData(formData)
-  const fieldErrors = validateDonation(values)
+  const values = contactValuesFromFormData(formData)
+  const fieldErrors = validateContact(values)
 
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors }
   }
 
-  const blockLabel = BLOCKS.find((item) => item.value === values.block)?.label ?? values.block
-
   try {
     const payload = await getPayload({ config })
     await payload.create({
-      collection: 'donations',
+      collection: 'contact-messages',
       overrideAccess: true,
       data: {
         name: values.name,
-        district: DISTRICT,
-        block: blockLabel,
-        mekhala: values.mekhala,
-        age: Number(values.age),
-        gender: values.gender as (typeof GENDERS)[number],
-        bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
         mobile: values.mobile,
         email: values.email || undefined,
-        address: values.address,
-        donatedBefore: values.donatedBefore as 'yes' | 'no',
-        lastDonationDate: values.donatedBefore === 'yes' ? values.lastDonationDate : null,
-        preferredDate: values.preferredDate,
+        message: values.message,
       },
     })
   } catch (error) {
-    console.error('Donation submit failed', error)
-
+    console.error('Contact submit failed', error)
     if (error instanceof ValidationError) {
       const nextFieldErrors: Record<string, string> = {}
       const data = error.data as { errors?: { path?: string; message?: string }[] } | undefined
@@ -62,7 +49,6 @@ export async function submitDonation(
         return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors: nextFieldErrors }
       }
     }
-
     return { ok: false, error: 'Could not submit right now. Please try again.' }
   }
 

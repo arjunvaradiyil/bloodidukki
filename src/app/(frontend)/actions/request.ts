@@ -2,56 +2,54 @@
 
 import { getPayload, ValidationError } from 'payload'
 import config from '@payload-config'
-import { BLOOD_GROUPS, BLOCKS, DISTRICT, GENDERS } from '@/lib/idukki'
-import { validateDonation, valuesFromFormData } from '@/lib/donate-validation'
+import { BLOOD_GROUPS, isBlockValue } from '@/lib/idukki'
+import { localToday } from '@/lib/donate-validation'
+import { requestValuesFromFormData, validateBloodRequest } from '@/lib/request-validation'
 
-export type DonateState = {
+export type RequestState = {
   ok: boolean
   error: string | null
   fieldErrors?: Record<string, string>
 }
 
-export async function submitDonation(
-  _prev: DonateState,
+export async function submitBloodRequest(
+  _prev: RequestState,
   formData: FormData,
-): Promise<DonateState> {
+): Promise<RequestState> {
   if (String(formData.get('company') ?? '').trim()) {
     return { ok: true, error: null }
   }
 
-  const values = valuesFromFormData(formData)
-  const fieldErrors = validateDonation(values)
+  const values = requestValuesFromFormData(formData)
+  const fieldErrors = validateBloodRequest(values, localToday())
 
   if (Object.keys(fieldErrors).length > 0) {
     return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors }
   }
 
-  const blockLabel = BLOCKS.find((item) => item.value === values.block)?.label ?? values.block
+  if (!isBlockValue(values.block)) {
+    return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors: { block: 'Select a block.' } }
+  }
 
   try {
     const payload = await getPayload({ config })
     await payload.create({
-      collection: 'donations',
+      collection: 'blood-requests',
       overrideAccess: true,
       data: {
-        name: values.name,
-        district: DISTRICT,
-        block: blockLabel,
-        mekhala: values.mekhala,
-        age: Number(values.age),
-        gender: values.gender as (typeof GENDERS)[number],
+        patientName: values.patientName,
         bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
+        units: Number(values.units),
+        hospital: values.hospital,
+        block: values.block,
+        neededBy: values.neededBy,
+        requesterName: values.requesterName,
         mobile: values.mobile,
-        email: values.email || undefined,
-        address: values.address,
-        donatedBefore: values.donatedBefore as 'yes' | 'no',
-        lastDonationDate: values.donatedBefore === 'yes' ? values.lastDonationDate : null,
-        preferredDate: values.preferredDate,
+        notes: values.notes || undefined,
       },
     })
   } catch (error) {
-    console.error('Donation submit failed', error)
-
+    console.error('Blood request submit failed', error)
     if (error instanceof ValidationError) {
       const nextFieldErrors: Record<string, string> = {}
       const data = error.data as { errors?: { path?: string; message?: string }[] } | undefined
@@ -62,7 +60,6 @@ export async function submitDonation(
         return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors: nextFieldErrors }
       }
     }
-
     return { ok: false, error: 'Could not submit right now. Please try again.' }
   }
 

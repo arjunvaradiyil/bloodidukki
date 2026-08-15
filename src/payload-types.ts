@@ -70,6 +70,9 @@ export interface Config {
     users: User;
     media: Media;
     donations: Donation;
+    hospitals: Hospital;
+    'blood-requests': BloodRequest;
+    'contact-messages': ContactMessage;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -80,6 +83,9 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     donations: DonationsSelect<false> | DonationsSelect<true>;
+    hospitals: HospitalsSelect<false> | HospitalsSelect<true>;
+    'blood-requests': BloodRequestsSelect<false> | BloodRequestsSelect<true>;
+    'contact-messages': ContactMessagesSelect<false> | ContactMessagesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -194,6 +200,60 @@ export interface Donation {
   createdAt: string;
 }
 /**
+ * Hospitals and blood banks shown on the Find Hospitals page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hospitals".
+ */
+export interface Hospital {
+  id: number;
+  name: string;
+  kind: 'hospital' | 'blood-bank';
+  block: 'adimaly' | 'azhutha' | 'devikulam' | 'elamdesam' | 'idukki' | 'kattappana' | 'nedumkandam' | 'peerumade';
+  place: string;
+  address: string;
+  phone?: string | null;
+  notes?: string | null;
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Emergency blood requests submitted from the website.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blood-requests".
+ */
+export interface BloodRequest {
+  id: number;
+  patientName: string;
+  bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
+  units: number;
+  hospital: string;
+  block: 'adimaly' | 'azhutha' | 'devikulam' | 'elamdesam' | 'idukki' | 'kattappana' | 'nedumkandam' | 'peerumade';
+  neededBy: string;
+  requesterName: string;
+  mobile: string;
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Messages sent from the Contact Us page.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages".
+ */
+export interface ContactMessage {
+  id: number;
+  name: string;
+  mobile: string;
+  email?: string | null;
+  message: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -228,6 +288,18 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'donations';
         value: number | Donation;
+      } | null)
+    | ({
+        relationTo: 'hospitals';
+        value: number | Hospital;
+      } | null)
+    | ({
+        relationTo: 'blood-requests';
+        value: number | BloodRequest;
+      } | null)
+    | ({
+        relationTo: 'contact-messages';
+        value: number | ContactMessage;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -334,6 +406,51 @@ export interface DonationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hospitals_select".
+ */
+export interface HospitalsSelect<T extends boolean = true> {
+  name?: T;
+  kind?: T;
+  block?: T;
+  place?: T;
+  address?: T;
+  phone?: T;
+  notes?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "blood-requests_select".
+ */
+export interface BloodRequestsSelect<T extends boolean = true> {
+  patientName?: T;
+  bloodGroup?: T;
+  units?: T;
+  hospital?: T;
+  block?: T;
+  neededBy?: T;
+  requesterName?: T;
+  mobile?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-messages_select".
+ */
+export interface ContactMessagesSelect<T extends boolean = true> {
+  name?: T;
+  mobile?: T;
+  email?: T;
+  message?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
@@ -384,7 +501,7 @@ export interface Header {
     | {
         label: string;
         /**
-         * Use #section-id for on-page anchors (e.g. #about)
+         * Use a page path such as /hospitals, or #section-id for on-page anchors.
          */
         href: string;
         id?: string | null;

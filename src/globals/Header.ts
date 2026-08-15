@@ -11,14 +11,14 @@ export const Header: GlobalConfig = {
       name: 'logoTextPrimary',
       type: 'text',
       label: 'Logo text (primary)',
-      defaultValue: 'DONATE',
+      defaultValue: 'DYFI',
       required: true,
     },
     {
       name: 'logoTextAccent',
       type: 'text',
       label: 'Logo text (accent)',
-      defaultValue: 'BLOOD',
+      defaultValue: 'IDUKKI',
       required: true,
     },
     {
@@ -41,11 +41,15 @@ export const Header: GlobalConfig = {
           type: 'text',
           required: true,
           admin: {
-            description: 'Use #section-id for on-page anchors (e.g. #about)',
+            description: 'Use a page path such as /hospitals, or #section-id for on-page anchors.',
           },
         },
       ],
-      defaultValue: [{ label: 'Home', href: '#home' }],
+      defaultValue: [
+        { label: 'Find Hospitals', href: '#' },
+        { label: 'Request for Blood', href: '#' },
+        { label: 'Contact Us', href: '#' },
+      ],
     },
     {
       name: 'ctaLabel',

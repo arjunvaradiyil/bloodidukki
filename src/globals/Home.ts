@@ -82,13 +82,13 @@ export const Home: GlobalConfig = {
             {
               name: 'label',
               type: 'text',
-              defaultValue: 'Find a Blood Camp',
+              defaultValue: 'Find Hospitals',
               required: true,
             },
             {
               name: 'href',
               type: 'text',
-              defaultValue: '#camps',
+              defaultValue: '/hospitals',
               required: true,
             },
           ],
