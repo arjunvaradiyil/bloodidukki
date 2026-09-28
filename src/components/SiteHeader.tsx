@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { HeartIcon } from '@/components/Icons'
 import { cn } from '@/lib/cn'
@@ -25,6 +26,11 @@ const NAV_ITEMS = defaultHeader.navItems
 
 export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
   const [open, setOpen] = useState(false)
+  const pathname = usePathname()
+
+  function isPageLink(href: string) {
+    return href.startsWith('/') && href !== '/'
+  }
 
   useEffect(() => {
     if (!open) return
@@ -66,7 +72,12 @@ export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
     <header className="fixed inset-x-0 top-0 z-40 flex justify-center px-4 pt-4 max-sm:px-3">
       <div className="relative w-full max-w-[1100px]">
         <div className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-full border border-white/70 bg-white/92 py-1.5 pr-1.5 pl-2 shadow-[0_12px_40px_rgba(0,0,0,0.22)] backdrop-blur-xl max-sm:pl-2.5">
-          <Link href="/" prefetch={false} className="inline-flex items-center gap-2 pl-1" aria-label="DYFI Idukki">
+          <Link
+            href="/"
+            prefetch={false}
+            className="inline-flex items-center gap-2 pl-1"
+            aria-label="DYFI Idukki"
+          >
             <img
               src="/images/STAR.jpg"
               alt=""
@@ -80,12 +91,26 @@ export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
             </span>
           </Link>
 
-          <nav className="hidden min-w-0 items-center justify-center gap-1 md:flex" aria-label="Primary">
-            {NAV_ITEMS.map((item) => (
-              <button type="button" key={item.label} className={navClass}>
-                {item.label}
-              </button>
-            ))}
+          <nav
+            className="hidden min-w-0 items-center justify-center gap-1 md:flex"
+            aria-label="Primary"
+          >
+            {NAV_ITEMS.map((item) =>
+              isPageLink(item.href) ? (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  prefetch={false}
+                  className={cn(navClass, pathname.startsWith(item.href) && 'bg-black/5 text-blood')}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button type="button" key={item.label} className={navClass}>
+                  {item.label}
+                </button>
+              ),
+            )}
           </nav>
 
           <div className="flex items-center justify-end gap-2">
@@ -98,9 +123,24 @@ export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
               aria-label={open ? 'Close navigation' : 'Open navigation'}
               onClick={() => setOpen((v) => !v)}
             >
-              <span className={cn('h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150', open && 'translate-y-[7px] rotate-45')} />
-              <span className={cn('h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150', open && 'opacity-0')} />
-              <span className={cn('h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150', open && '-translate-y-[7px] -rotate-45')} />
+              <span
+                className={cn(
+                  'h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150',
+                  open && 'translate-y-[7px] rotate-45',
+                )}
+              />
+              <span
+                className={cn(
+                  'h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150',
+                  open && 'opacity-0',
+                )}
+              />
+              <span
+                className={cn(
+                  'h-0.5 w-5 rounded-full bg-[#1a1113] transition duration-150',
+                  open && '-translate-y-[7px] -rotate-45',
+                )}
+              />
             </button>
           </div>
         </div>
@@ -114,13 +154,27 @@ export function SiteHeader({ ctaLabel, onDonate }: HeaderProps) {
             <ul className="m-0 flex list-none flex-col gap-1 p-0">
               {NAV_ITEMS.map((item) => (
                 <li key={item.label}>
-                  <button
-                    type="button"
-                    className="block w-full rounded-full px-4 py-3 text-left text-base font-medium text-[#2b1a1d]"
-                    onClick={() => setOpen(false)}
-                  >
-                    {item.label}
-                  </button>
+                  {isPageLink(item.href) ? (
+                    <Link
+                      href={item.href}
+                      prefetch={false}
+                      className={cn(
+                        'block rounded-full px-4 py-3 text-base font-medium text-[#2b1a1d]',
+                        pathname.startsWith(item.href) && 'bg-black/5 text-blood',
+                      )}
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.label}
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      className="block w-full rounded-full px-4 py-3 text-left text-base font-medium text-[#2b1a1d]"
+                      onClick={() => setOpen(false)}
+                    >
+                      {item.label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>

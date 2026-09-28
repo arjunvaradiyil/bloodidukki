@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Sora, Manrope } from 'next/font/google'
+import { Sora, Manrope, Noto_Sans_Malayalam } from 'next/font/google'
 import React from 'react'
 import './globals.css'
 
@@ -15,6 +15,13 @@ const manrope = Manrope({
   display: 'swap',
 })
 
+const malayalam = Noto_Sans_Malayalam({
+  subsets: ['malayalam'],
+  weight: ['400', '600', '700'],
+  variable: '--font-ml',
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
   title: 'Donate Blood — One Donation. Countless Lives.',
   description:
@@ -25,7 +32,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
   return (
-    <html lang="en" className={`${sora.variable} ${manrope.variable}`}>
+    <html lang="en" className={`${sora.variable} ${manrope.variable} ${malayalam.variable}`}>
       <body className="min-h-full overflow-x-hidden bg-ink font-body text-white antialiased">
         <main>{children}</main>
       </body>

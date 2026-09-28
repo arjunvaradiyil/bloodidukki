@@ -46,9 +46,9 @@ export const Header: GlobalConfig = {
         },
       ],
       defaultValue: [
-        { label: 'Find Hospitals', href: '#' },
+        { label: 'Find Hospitals', href: '/hospitals' },
         { label: 'Request for Blood', href: '#' },
-        { label: 'Contact Us', href: '#' },
+        { label: 'Contact Us', href: '/contact' },
       ],
     },
     {

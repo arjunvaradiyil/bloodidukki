@@ -2,9 +2,9 @@ export const defaultHeader = {
   logoTextPrimary: 'DYFI',
   logoTextAccent: 'IDUKKI',
   navItems: [
-    { label: 'Find Hospitals', href: '#' },
+    { label: 'Find Hospitals', href: '/hospitals' },
     { label: 'Request for Blood', href: '#' },
-    { label: 'Contact Us', href: '#' },
+    { label: 'Contact Us', href: '/contact' },
   ],
   ctaLabel: 'Donate Now',
   ctaHref: '/donate',

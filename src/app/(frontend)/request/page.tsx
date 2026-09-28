@@ -7,7 +7,8 @@ import { btnBase, btnGhost } from '@/lib/ui'
 
 export const metadata: Metadata = {
   title: 'Request Blood — DYFI Idukki',
-  description: 'Request blood support in Idukki. Tell us the patient details, hospital, and blood group needed.',
+  description:
+    'Request blood support in Idukki. Tell us the patient details, hospital, and blood group needed.',
 }
 
 const STEPS = [
@@ -37,10 +38,12 @@ export default function RequestPage() {
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,22.5rem)_minmax(0,1fr)] lg:gap-12">
         <aside className="flex flex-col gap-5">
           <div className="rounded-[1.25rem] border border-white/12 bg-[rgba(10,5,7,0.72)] p-6 backdrop-blur-[18px]">
-            <p className="m-0 text-[0.78rem] font-bold tracking-[0.16em] text-blood uppercase">Before you send</p>
+            <p className="m-0 text-[0.78rem] font-bold tracking-[0.16em] text-blood uppercase">
+              Before you send
+            </p>
             <p className="mt-3 leading-[1.6] text-white/80">
-              For emergencies, call the hospital blood bank first. Then send this request so DYFI Idukki volunteers can
-              try to find donors.
+              For emergencies, call the hospital blood bank first. Then send this request so DYFI
+              Idukki volunteers can try to find donors.
             </p>
             <a href="/hospitals" className={cn(btnBase, btnGhost, 'mt-5 min-h-11 px-4 text-sm')}>
               <PinIcon className="size-4" />
@@ -57,8 +60,12 @@ export default function RequestPage() {
                   {index + 1}
                 </span>
                 <span>
-                  <span className="block font-display text-[0.98rem] font-semibold">{step.title}</span>
-                  <span className="mt-1 block text-sm leading-[1.45] text-white/65">{step.body}</span>
+                  <span className="block font-display text-[0.98rem] font-semibold">
+                    {step.title}
+                  </span>
+                  <span className="mt-1 block text-sm leading-[1.45] text-white/65">
+                    {step.body}
+                  </span>
                 </span>
               </li>
             ))}

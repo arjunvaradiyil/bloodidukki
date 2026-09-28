@@ -24,10 +24,7 @@ export function DropIcon({ className }: IconProps) {
 export function LogoDropIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 40 48" fill="none" aria-hidden="true">
-      <path
-        d="M20 2C20 2 4 18.5 4 30.5a16 16 0 0 0 32 0C36 18.5 20 2 20 2Z"
-        fill="currentColor"
-      />
+      <path d="M20 2C20 2 4 18.5 4 30.5a16 16 0 0 0 32 0C36 18.5 20 2 20 2Z" fill="currentColor" />
       <path
         d="M20 28.5c-2.8-2.4-7.2-.9-7.2 2.7 0 2.4 2.1 4.3 4.7 5.5 1.6.7 3.3 1.1 4.5 1.1s2.9-.4 4.5-1.1c2.6-1.2 4.7-3.1 4.7-5.5 0-3.6-4.4-5.1-7.2-2.7-.6.5-1.4.5-2 0Z"
         fill="#E11D2E"
@@ -127,8 +124,21 @@ export function ChevronDownIcon({ className }: IconProps) {
 export function CalendarIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <rect x="3.5" y="5" width="17" height="15.5" rx="2.2" stroke="currentColor" strokeWidth="1.7" />
-      <path d="M8 3.5v3.5M16 3.5v3.5M3.5 10h17" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+      <rect
+        x="3.5"
+        y="5"
+        width="17"
+        height="15.5"
+        rx="2.2"
+        stroke="currentColor"
+        strokeWidth="1.7"
+      />
+      <path
+        d="M8 3.5v3.5M16 3.5v3.5M3.5 10h17"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
     </svg>
   )
 }

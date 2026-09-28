@@ -5,8 +5,9 @@
   --color-blood-deep: #b01020;
   --color-blood-wave: #c41628;
   --color-ink: #0b0b0d;
-  --font-display: var(--font-sora), ui-sans-serif, system-ui, sans-serif;
-  --font-body: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-sora), var(--font-ml), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-manrope), var(--font-ml), ui-sans-serif, system-ui, sans-serif;
+  --font-malayalam: var(--font-ml), ui-sans-serif, system-ui, sans-serif;
   --animate-hero-ken: hero-ken 28s ease-in-out infinite alternate;
   --animate-ekg: ekg-draw 2.8s ease-in-out infinite;
   --animate-heartbeat: heartbeat 1.4s ease-in-out infinite;

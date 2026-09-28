@@ -42,6 +42,8 @@ export async function getHospitals(): Promise<Hospital[]> {
     null,
   )
 
-  const fromCms = result?.docs.map((doc) => asHospital(doc)).filter((item): item is Hospital => Boolean(item)) ?? []
+  const fromCms =
+    result?.docs.map((doc) => asHospital(doc)).filter((item): item is Hospital => Boolean(item)) ??
+    []
   return fromCms.length > 0 ? fromCms : DEFAULT_HOSPITALS
 }
