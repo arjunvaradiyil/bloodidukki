@@ -7,7 +7,8 @@ import { BLOCKS } from '@/lib/idukki'
 import { blockLabel, kindLabel, type Hospital } from '@/lib/hospitals'
 import { btnBase, btnGhost, btnPrimary, fieldControl } from '@/lib/ui'
 
-const PAGE_SIZE = 2
+const PAGE_SIZE_DESKTOP = 2
+const PAGE_SIZE_MOBILE = 1
 
 type HospitalDirectoryProps = {
   hospitals: Hospital[]
@@ -17,7 +18,16 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
   const [query, setQuery] = useState('')
   const [block, setBlock] = useState('all')
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(PAGE_SIZE_DESKTOP)
   const rootRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const media = window.matchMedia('(max-width: 640px)')
+    const apply = () => setPageSize(media.matches ? PAGE_SIZE_MOBILE : PAGE_SIZE_DESKTOP)
+    apply()
+    media.addEventListener('change', apply)
+    return () => media.removeEventListener('change', apply)
+  }, [])
 
   const listedBlocks = useMemo(() => {
     const used = new Set(hospitals.map((item) => item.block).filter(Boolean))
@@ -43,15 +53,15 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
     ...(hasOutside ? [{ value: 'outside', label: 'Outside Idukki' }] : []),
   ]
 
-  const pageCount = Math.max(1, Math.ceil(results.length / PAGE_SIZE))
+  const pageCount = Math.max(1, Math.ceil(results.length / pageSize))
   const currentPage = Math.min(page, pageCount)
-  const paged = results.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE)
-  const from = results.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1
-  const to = Math.min(currentPage * PAGE_SIZE, results.length)
+  const paged = results.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const from = results.length === 0 ? 0 : (currentPage - 1) * pageSize + 1
+  const to = Math.min(currentPage * pageSize, results.length)
 
   useEffect(() => {
     setPage(1)
-  }, [query, block])
+  }, [query, block, pageSize])
 
   function goTo(next: number) {
     setPage(next)
@@ -61,7 +71,7 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
 
   return (
     <div ref={rootRef}>
-      <div className="rounded-[1.15rem] border border-white/12 bg-white/[0.06] p-3 shadow-[0_24px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl sm:p-3.5">
+      <div className="rounded-[1.15rem] border border-white/12 bg-white/[0.06] p-3 shadow-[0_24px_60px_rgba(0,0,0,0.28)] backdrop-blur-xl max-sm:p-2.5 sm:p-3.5">
         <label className="block">
           <span className="mb-1.5 block text-[0.75rem] font-bold tracking-[0.08em] text-white/55 uppercase">
             Search
@@ -77,14 +87,14 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
             />
           </span>
         </label>
-        <div className="mt-3 flex flex-wrap gap-1.5">
+        <div className="mt-3 flex flex-nowrap gap-1.5 overflow-x-auto pb-0.5 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {filters.map((item) => (
             <button
               key={item.value}
               type="button"
               onClick={() => setBlock(item.value)}
               className={cn(
-                'min-h-8 rounded-full px-3 text-[0.78rem] font-semibold transition',
+                'min-h-8 shrink-0 rounded-full px-3 text-[0.78rem] font-semibold transition',
                 block === item.value
                   ? 'bg-blood text-white shadow-[0_8px_20px_rgba(225,29,46,0.28)]'
                   : 'border border-white/14 bg-white/[0.04] text-white/80 hover:border-white/30 hover:bg-white/[0.08]',
@@ -96,11 +106,13 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
         </div>
       </div>
 
-      <p className="mt-3 text-[0.8rem] text-white/55">
-        {results.length === 0
-          ? 'No centres match this search'
-          : `Showing ${from}–${to} of ${results.length} ${results.length === 1 ? 'centre' : 'centres'}`}
-      </p>
+      {results.length === 0 ? (
+        <p className="mt-3 text-[0.8rem] text-white/55">No centres match this search</p>
+      ) : (
+        <p className="mt-3 text-[0.8rem] text-white/55 max-sm:sr-only">
+          Showing {from}–{to} of {results.length} {results.length === 1 ? 'centre' : 'centres'}
+        </p>
+      )}
 
       {results.length === 0 ? (
         <div className="mt-4 rounded-[1.4rem] border border-white/12 bg-white/[0.06] p-6 backdrop-blur-xl">
@@ -118,7 +130,7 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
           </button>
         </div>
       ) : (
-        <ul className="mt-3 m-0 grid list-none gap-3 p-0 md:grid-cols-2">
+        <ul className="mt-3 m-0 grid list-none gap-3 p-0 max-sm:mt-2 md:grid-cols-2">
           {paged.map((item) => (
             <li
               key={`${item.name}-${item.place}`}
@@ -175,8 +187,8 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
         </ul>
       )}
 
-      {results.length > PAGE_SIZE ? (
-        <nav className="mt-4 mb-2 flex flex-wrap items-center justify-center gap-1.5" aria-label="Hospital pages">
+      {results.length > pageSize ? (
+        <nav className="mt-3 mb-1 flex flex-wrap items-center justify-center gap-1.5 max-sm:mt-2.5" aria-label="Hospital pages">
           <button
             type="button"
             className={cn(btnBase, btnGhost, 'min-h-8 px-3 text-[0.78rem]')}
@@ -186,24 +198,29 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
             <ChevronDownIcon className="size-4 rotate-90" />
             Prev
           </button>
-          {Array.from({ length: pageCount }, (_, index) => {
-            const number = index + 1
-            return (
-              <button
-                key={number}
-                type="button"
-                aria-current={number === currentPage ? 'page' : undefined}
-                className={cn(
-                  btnBase,
-                  'min-h-8 min-w-8 px-0 text-[0.78rem]',
-                  number === currentPage ? btnPrimary : btnGhost,
-                )}
-                onClick={() => goTo(number)}
-              >
-                {number}
-              </button>
-            )
-          })}
+          <p className="m-0 min-w-[4.5rem] text-center text-[0.82rem] font-semibold text-white/75 sm:hidden">
+            {currentPage} / {pageCount}
+          </p>
+          <div className="hidden sm:flex sm:flex-wrap sm:items-center sm:gap-1.5">
+            {Array.from({ length: pageCount }, (_, index) => {
+              const number = index + 1
+              return (
+                <button
+                  key={number}
+                  type="button"
+                  aria-current={number === currentPage ? 'page' : undefined}
+                  className={cn(
+                    btnBase,
+                    'min-h-8 min-w-8 px-0 text-[0.78rem]',
+                    number === currentPage ? btnPrimary : btnGhost,
+                  )}
+                  onClick={() => goTo(number)}
+                >
+                  {number}
+                </button>
+              )
+            })}
+          </div>
           <button
             type="button"
             className={cn(btnBase, btnGhost, 'min-h-8 px-3 text-[0.78rem]')}

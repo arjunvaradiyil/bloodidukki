@@ -85,8 +85,8 @@ function PanelOverlay({ children, center = false }: { children: ReactNode; cente
         <div
           className={
             center
-              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[8.5rem]'
-              : 'relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[6.75rem] pb-[8.5rem] max-sm:w-[min(calc(100%-1.5rem),1180px)]'
+              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[8.5rem] max-sm:px-4 max-sm:pt-[5.75rem] max-sm:pb-[6.75rem]'
+              : 'relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[6.75rem] pb-[8.5rem] max-sm:w-[min(calc(100%-1.25rem),1180px)] max-sm:pt-[5.75rem] max-sm:pb-[6.75rem]'
           }
         >
           {children}
@@ -146,13 +146,13 @@ export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDo
       />
       {panel === 'hospitals' ? (
         <PanelOverlay>
-          <p className="m-0 mb-1.5 text-[0.7rem] font-bold tracking-[0.16em] text-white/55 uppercase">
+          <p className="m-0 mb-1.5 text-[0.7rem] font-bold tracking-[0.16em] text-white/55 uppercase max-sm:mb-1">
             Idukki directory
           </p>
-          <h2 className="m-0 font-display text-[clamp(1.7rem,3.6vw,2.45rem)] font-extrabold tracking-tight leading-[1.08]">
+          <h2 className="m-0 font-display text-[clamp(1.7rem,3.6vw,2.45rem)] font-extrabold tracking-tight leading-[1.08] max-sm:text-[1.55rem]">
             <span className="text-white">Find</span> <span className="text-blood">hospitals</span>
           </h2>
-          <p className="mt-2 mb-5 max-w-[36rem] text-[0.92rem] leading-[1.5] text-white/75">
+          <p className="mt-2 mb-5 max-w-[36rem] text-[0.92rem] leading-[1.5] text-white/75 max-sm:mt-1 max-sm:mb-3 max-sm:text-[0.84rem] max-sm:leading-snug">
             Search by name, place or block to reach a centre across Idukki.
           </p>
           <HospitalDirectory hospitals={hospitals} />
