@@ -2,7 +2,12 @@ import { SITE_NAME } from '@/lib/defaults'
 
 function PulseMark({ className }: { className?: string }) {
   return (
-    <svg className={`h-auto overflow-visible ${className ?? ''}`} viewBox="0 0 220 72" fill="none" aria-hidden="true">
+    <svg
+      className={`h-auto overflow-visible ${className ?? ''}`}
+      viewBox="0 0 220 72"
+      fill="none"
+      aria-hidden="true"
+    >
       <path
         className="[stroke-dasharray:210] [stroke-dashoffset:210] animate-ekg motion-reduce:animate-none"
         d="M6 36 H52 L66 10 L80 62 L94 20 L106 36 H150"
@@ -65,6 +70,9 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
             Website powered by DYFI Idukki District Professional Sub Committee · {SITE_NAME.plain}
           </p>
         </div>
+        <p className="relative z-[4] mt-1 text-center text-[0.5rem] font-medium tracking-[0.06em] text-white/75 lowercase sm:absolute sm:right-3 sm:bottom-1.5 sm:mt-0 sm:text-right lg:right-5">
+          developed by faircode
+        </p>
       </footer>
     </div>
   )
