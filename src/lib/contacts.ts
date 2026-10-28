@@ -16,7 +16,9 @@ export const contactPeople: ContactPerson[] = [
     roles: ['DYFI State Secretariat Member', 'Idukki District Secretary'],
     phone: '+918156908156',
     photo: '/images/contacts/s-sudheesh.jpg',
-    photoPosition: 'center 12%',
+    photoZoom: 1.55,
+    photoPosition: '78% 16%',
+    photoOrigin: '78% 18%',
   },
   {
     name: 'ബി. അനൂപ്',
@@ -30,7 +32,7 @@ export const contactPeople: ContactPerson[] = [
   },
   {
     name: 'ശരത്ത്. എം. എസ്',
-    englishName: 'Sarath M. S.',
+    englishName: 'Sharath M. S.',
     roles: ['DYFI State Committee Member', 'District Treasurer'],
     phone: '+918547704826',
     photo: '/images/contacts/sharath-ms.jpg',
