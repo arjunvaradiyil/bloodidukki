@@ -23,6 +23,8 @@ const malayalam = Noto_Sans_Malayalam({
   display: 'swap',
 })
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: SITE_NAME.full,
   description: `${SITE_NAME.plain} connects donors with patients who need blood. Donate, find a hospital, or request support.`,

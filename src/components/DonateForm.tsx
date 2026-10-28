@@ -6,7 +6,12 @@ import { Dropdown } from '@/components/Dropdown'
 import { HeartIcon } from '@/components/Icons'
 import { submitDonation, type DonateState } from '@/app/(frontend)/actions/donate'
 import { cn } from '@/lib/cn'
-import { errorForField, validateDonation, type DonateValues } from '@/lib/donate-validation'
+import {
+  earliestPreferredDate,
+  errorForField,
+  validateDonation,
+  type DonateValues,
+} from '@/lib/donate-validation'
 import {
   BLOOD_GROUPS,
   BLOCKS,
@@ -58,7 +63,14 @@ function getSteps(donatedBefore: string): Step[] {
     steps.push({ key: 'lastDonationDate', title: 'When did you last donate blood?' })
   }
 
-  steps.push({ key: 'preferredDate', title: 'When do you prefer to donate?' })
+  steps.push({
+    key: 'preferredDate',
+    title: 'When do you prefer to donate?',
+    hint:
+      donatedBefore === 'yes'
+        ? 'Wait at least 3 months after your last donation.'
+        : undefined,
+  })
   return steps
 }
 
@@ -90,7 +102,13 @@ export function DonateForm() {
   function applyValue(key: keyof DonateValues, value: string): DonateValues {
     const next = { ...values, [key]: value }
     if (key === 'block') next.mekhala = ''
-    if (key === 'donatedBefore' && value === 'no') next.lastDonationDate = ''
+    if (key === 'donatedBefore' && value === 'no') {
+      next.lastDonationDate = ''
+    }
+    if (next.donatedBefore === 'yes' && next.lastDonationDate && next.preferredDate) {
+      const earliest = earliestPreferredDate(next.lastDonationDate, today)
+      if (next.preferredDate < earliest) next.preferredDate = ''
+    }
     return next
   }
 
@@ -377,7 +395,11 @@ export function DonateForm() {
             name="preferredDate"
             value={values.preferredDate}
             onChange={(value) => update('preferredDate', value)}
-            min={today}
+            min={
+              values.donatedBefore === 'yes'
+                ? earliestPreferredDate(values.lastDonationDate, today)
+                : today
+            }
             invalid={Boolean(stepError)}
           />
         ) : null}

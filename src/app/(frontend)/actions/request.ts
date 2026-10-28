@@ -1,9 +1,9 @@
 'use server'
 
-import { getPayload, ValidationError } from 'payload'
-import config from '@payload-config'
+import { ValidationError } from 'payload'
 import { BLOOD_GROUPS, isBlockValue } from '@/lib/idukki'
-import { localToday } from '@/lib/donate-validation'
+import { localToday, toPayloadDate } from '@/lib/donate-validation'
+import { getWritablePayload, withDeadline } from '@/lib/payload-client'
 import { requestValuesFromFormData, validateBloodRequest } from '@/lib/request-validation'
 
 export type RequestState = {
@@ -11,6 +11,8 @@ export type RequestState = {
   error: string | null
   fieldErrors?: Record<string, string>
 }
+
+const WRITE_TIMEOUT_MS = 8000
 
 export async function submitBloodRequest(
   _prev: RequestState,
@@ -31,23 +33,40 @@ export async function submitBloodRequest(
     return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors: { block: 'Select a block.' } }
   }
 
+  const neededBy = toPayloadDate(values.neededBy)
+  if (!neededBy) {
+    return {
+      ok: false,
+      error: 'Please fix the highlighted fields.',
+      fieldErrors: { neededBy: 'Choose when the blood is needed.' },
+    }
+  }
+
   try {
-    const payload = await getPayload({ config })
-    await payload.create({
-      collection: 'blood-requests',
-      overrideAccess: true,
-      data: {
-        patientName: values.patientName,
-        bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
-        units: Number(values.units),
-        hospital: values.hospital,
-        block: values.block,
-        neededBy: values.neededBy,
-        requesterName: values.requesterName,
-        mobile: values.mobile,
-        notes: values.notes || undefined,
-      },
-    })
+    const payload = await getWritablePayload()
+    if (!payload) {
+      return { ok: false, error: 'Could not submit right now. Please try again.' }
+    }
+
+    await withDeadline(
+      payload.create({
+        collection: 'blood-requests',
+        overrideAccess: true,
+        data: {
+          patientName: values.patientName,
+          bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
+          units: Number(values.units),
+          hospital: values.hospital,
+          block: values.block,
+          neededBy,
+          requesterName: values.requesterName,
+          mobile: values.mobile,
+          notes: values.notes || undefined,
+        },
+      }),
+      WRITE_TIMEOUT_MS,
+      'Blood request save timed out',
+    )
   } catch (error) {
     console.error('Blood request submit failed', error)
     if (error instanceof ValidationError) {

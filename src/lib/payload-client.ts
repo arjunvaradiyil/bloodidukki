@@ -29,6 +29,22 @@ export function withTimeout<T>(promise: Promise<T>, ms: number, fallback: T): Pr
   ])
 }
 
+export function withDeadline<T>(promise: Promise<T>, ms: number, label = 'Timed out'): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(label)), ms)
+    promise.then(
+      (value) => {
+        clearTimeout(timer)
+        resolve(value)
+      },
+      (error) => {
+        clearTimeout(timer)
+        reject(error)
+      },
+    )
+  })
+}
+
 export const getPayloadClient = cache(async (): Promise<Payload | null> => {
   if (!process.env.PAYLOAD_SECRET) return null
 
@@ -39,3 +55,14 @@ export const getPayloadClient = cache(async (): Promise<Payload | null> => {
     return null
   }
 })
+
+export async function getWritablePayload(): Promise<Payload | null> {
+  if (!process.env.PAYLOAD_SECRET) return null
+
+  try {
+    return await withDeadline(startPayload(), 12000, 'Payload init timed out')
+  } catch (error) {
+    console.error('Payload write client failed', error)
+    return null
+  }
+}

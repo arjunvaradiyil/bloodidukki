@@ -1,15 +1,17 @@
 'use server'
 
-import { getPayload, ValidationError } from 'payload'
-import config from '@payload-config'
+import { ValidationError } from 'payload'
 import { BLOOD_GROUPS, BLOCKS, DISTRICT, GENDERS } from '@/lib/idukki'
-import { validateDonation, valuesFromFormData } from '@/lib/donate-validation'
+import { toPayloadDate, validateDonation, valuesFromFormData } from '@/lib/donate-validation'
+import { getWritablePayload, withDeadline } from '@/lib/payload-client'
 
 export type DonateState = {
   ok: boolean
   error: string | null
   fieldErrors?: Record<string, string>
 }
+
+const WRITE_TIMEOUT_MS = 8000
 
 export async function submitDonation(
   _prev: DonateState,
@@ -27,28 +29,47 @@ export async function submitDonation(
   }
 
   const blockLabel = BLOCKS.find((item) => item.value === values.block)?.label ?? values.block
+  const preferredDate = toPayloadDate(values.preferredDate)
+  const lastDonationDate =
+    values.donatedBefore === 'yes' ? toPayloadDate(values.lastDonationDate) : null
+
+  if (!preferredDate) {
+    return {
+      ok: false,
+      error: 'Please fix the highlighted fields.',
+      fieldErrors: { preferredDate: 'Choose a preferred donation date.' },
+    }
+  }
 
   try {
-    const payload = await getPayload({ config })
-    await payload.create({
-      collection: 'donations',
-      overrideAccess: true,
-      data: {
-        name: values.name,
-        district: DISTRICT,
-        block: blockLabel,
-        mekhala: values.mekhala,
-        age: Number(values.age),
-        gender: values.gender as (typeof GENDERS)[number],
-        bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
-        mobile: values.mobile,
-        email: values.email || undefined,
-        address: values.address,
-        donatedBefore: values.donatedBefore as 'yes' | 'no',
-        lastDonationDate: values.donatedBefore === 'yes' ? values.lastDonationDate : null,
-        preferredDate: values.preferredDate,
-      },
-    })
+    const payload = await getWritablePayload()
+    if (!payload) {
+      return { ok: false, error: 'Could not submit right now. Please try again.' }
+    }
+
+    await withDeadline(
+      payload.create({
+        collection: 'donations',
+        overrideAccess: true,
+        data: {
+          name: values.name,
+          district: DISTRICT,
+          block: blockLabel,
+          mekhala: values.mekhala,
+          age: Number(values.age),
+          gender: values.gender as (typeof GENDERS)[number],
+          bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
+          mobile: values.mobile,
+          email: values.email || undefined,
+          address: values.address,
+          donatedBefore: values.donatedBefore as 'yes' | 'no',
+          lastDonationDate,
+          preferredDate,
+        },
+      }),
+      WRITE_TIMEOUT_MS,
+      'Donation save timed out',
+    )
   } catch (error) {
     console.error('Donation submit failed', error)
 

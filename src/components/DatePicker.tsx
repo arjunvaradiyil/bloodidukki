@@ -127,7 +127,9 @@ export function DatePicker({
   }, [view, min, max, today])
 
   const openPicker = () => {
-    const base = value ? parseStamp(value) : new Date()
+    const usable =
+      value && (!min || value >= min) && (!max || value <= max) ? value : min || today
+    const base = parseStamp(usable)
     setView({ year: base.getFullYear(), month: base.getMonth() })
     setOpen((current) => !current)
   }
@@ -205,8 +207,9 @@ export function DatePicker({
                     className={cn(
                       'm-[0.04rem] aspect-square rounded-[0.3rem] text-[0.72rem] font-semibold text-white hover:enabled:bg-blood/20 disabled:cursor-not-allowed disabled:text-white/20',
                       !item.inMonth && 'text-white/30',
-                      item.isToday && item.iso !== value && 'shadow-[inset_0_0_0_1px_rgba(225,29,46,0.7)]',
-                      item.iso === value && 'bg-blood text-white',
+                      item.isToday && item.iso !== value && !item.disabled && 'shadow-[inset_0_0_0_1px_rgba(225,29,46,0.7)]',
+                      min && item.iso === min && item.iso !== value && !item.disabled && 'shadow-[inset_0_0_0_1px_rgba(225,29,46,0.7)]',
+                      item.iso === value && !item.disabled && 'bg-blood text-white',
                     )}
                     onPointerDown={(event) => event.preventDefault()}
                     onClick={(event) => {
@@ -228,7 +231,8 @@ export function DatePicker({
                 </button>
                 <button
                   type="button"
-                  className="text-blood hover:text-white"
+                  className="text-blood hover:text-white disabled:text-white/30"
+                  disabled={Boolean((min && today < min) || (max && today > max))}
                   onClick={() => {
                     const next = today
                     if ((min && next < min) || (max && next > max)) return

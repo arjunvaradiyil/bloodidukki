@@ -34,9 +34,7 @@ function mongoUrl() {
 }
 
 const atlasUrl = mongoUrl()
-const useMongo = Boolean(
-  atlasUrl && (process.env.VERCEL || process.env.DATABASE_URL?.startsWith('mongodb')),
-)
+const useMongo = Boolean(atlasUrl)
 
 export default buildConfig({
   admin: {

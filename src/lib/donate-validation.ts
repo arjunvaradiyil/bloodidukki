@@ -19,9 +19,34 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const MOBILE_RE = /^[6-9]\d{9}$/
 const NAME_RE = /^[\p{L}][\p{L} .']{1,79}$/u
 
+export const DONATION_GAP_MONTHS = 3
+
+function stampDate(date: Date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`
+}
+
 export function localToday() {
-  const now = new Date()
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
+  return stampDate(new Date())
+}
+
+export function addMonths(iso: string, months: number) {
+  const [year, month, day] = iso.split('-').map(Number)
+  const next = new Date(year, month - 1 + months, day)
+  if (next.getDate() !== day) next.setDate(0)
+  return stampDate(next)
+}
+
+export function earliestPreferredDate(lastDonationDate: string | undefined, today = localToday()) {
+  if (!lastDonationDate) return today
+  const eligible = addMonths(lastDonationDate, DONATION_GAP_MONTHS)
+  return eligible > today ? eligible : today
+}
+
+export function toPayloadDate(day: string | null | undefined) {
+  if (!day) return null
+  const [year, month, date] = day.split('-').map(Number)
+  if (!year || !month || !date) return null
+  return new Date(Date.UTC(year, month - 1, date)).toISOString()
 }
 
 export function valuesFromFormData(formData: FormData): DonateValues {
@@ -99,9 +124,9 @@ export function validateDonation(values: DonateValues, today = localToday()) {
   } else if (
     values.donatedBefore === 'yes' &&
     values.lastDonationDate &&
-    daysBetween(values.lastDonationDate, values.preferredDate) < 56
+    values.preferredDate < earliestPreferredDate(values.lastDonationDate, today)
   ) {
-    fieldErrors.preferredDate = 'Wait at least 56 days after your last donation.'
+    fieldErrors.preferredDate = 'Wait at least 3 months after your last donation.'
   }
 
   return fieldErrors
@@ -114,10 +139,4 @@ export function errorForField(
 ) {
   if (key === 'email' && !values.email.trim()) return ''
   return validateDonation(values, today)[key] || ''
-}
-
-function daysBetween(from: string, to: string) {
-  const start = new Date(`${from}T00:00:00`)
-  const end = new Date(`${to}T00:00:00`)
-  return Math.round((end.getTime() - start.getTime()) / 86400000)
 }

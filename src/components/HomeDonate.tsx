@@ -142,7 +142,9 @@ export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDo
         {...hero}
         onDonate={() => openPanel('donate')}
         onRequest={() => openPanel('request')}
-        form={panel === 'donate' ? <DonateForm /> : panel === 'request' ? <RequestForm /> : undefined}
+        form={
+          panel === 'donate' ? <DonateForm /> : panel === 'request' ? <RequestForm /> : undefined
+        }
       />
       {panel === 'hospitals' ? (
         <PanelOverlay>

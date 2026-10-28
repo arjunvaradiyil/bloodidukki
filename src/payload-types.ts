@@ -92,7 +92,7 @@ export interface Config {
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: number;
+    defaultIDType: string;
   };
   fallbackLocale: null;
   globals: {
@@ -136,7 +136,7 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: number;
+  id: string;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -161,7 +161,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: number;
+  id: string;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -182,7 +182,7 @@ export interface Media {
  * via the `definition` "donations".
  */
 export interface Donation {
-  id: number;
+  id: string;
   name: string;
   district: string;
   block: string;
@@ -206,7 +206,7 @@ export interface Donation {
  * via the `definition` "hospitals".
  */
 export interface Hospital {
-  id: number;
+  id: string;
   name: string;
   kind: 'hospital' | 'blood-bank';
   block:
@@ -240,7 +240,7 @@ export interface Hospital {
  * via the `definition` "blood-requests".
  */
 export interface BloodRequest {
-  id: number;
+  id: string;
   patientName: string;
   bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
   units: number;
@@ -275,7 +275,7 @@ export interface BloodRequest {
  * via the `definition` "contact-messages".
  */
 export interface ContactMessage {
-  id: number;
+  id: string;
   name: string;
   mobile: string;
   email?: string | null;
@@ -288,7 +288,7 @@ export interface ContactMessage {
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: number;
+  id: string;
   key: string;
   data:
     | {
@@ -305,36 +305,36 @@ export interface PayloadKv {
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: number;
+  id: string;
   document?:
     | ({
         relationTo: 'users';
-        value: number | User;
+        value: string | User;
       } | null)
     | ({
         relationTo: 'media';
-        value: number | Media;
+        value: string | Media;
       } | null)
     | ({
         relationTo: 'donations';
-        value: number | Donation;
+        value: string | Donation;
       } | null)
     | ({
         relationTo: 'hospitals';
-        value: number | Hospital;
+        value: string | Hospital;
       } | null)
     | ({
         relationTo: 'blood-requests';
-        value: number | BloodRequest;
+        value: string | BloodRequest;
       } | null)
     | ({
         relationTo: 'contact-messages';
-        value: number | ContactMessage;
+        value: string | ContactMessage;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -344,10 +344,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: number;
+  id: string;
   user: {
     relationTo: 'users';
-    value: number | User;
+    value: string | User;
   };
   key?: string | null;
   value?:
@@ -367,7 +367,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: number;
+  id: string;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -524,7 +524,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  * via the `definition` "header".
  */
 export interface Header {
-  id: number;
+  id: string;
   logoTextPrimary: string;
   logoTextAccent: string;
   navItems?:
@@ -547,13 +547,13 @@ export interface Header {
  * via the `definition` "home".
  */
 export interface Home {
-  id: number;
+  id: string;
   hero: {
     headlinePrimary: string;
     headlineAccent: string;
     subheadline: string;
     description: string;
-    backgroundImage?: (number | null) | Media;
+    backgroundImage?: (string | null) | Media;
     /**
      * MP4/WebM URL. Falls back to the background image when empty.
      */
