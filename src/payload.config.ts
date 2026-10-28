@@ -102,24 +102,32 @@ export default buildConfig({
   sharp,
   plugins: [],
   onInit: async (payload) => {
-    const email = process.env.ADMIN_EMAIL?.trim() || 'dyfiidukki@gmail.com'
-    const password = process.env.ADMIN_PASSWORD?.trim() || process.env.PAYLOAD_SECRET?.trim()
-    if (!password) return
+    const email = process.env.ADMIN_EMAIL?.trim()
+    const password = process.env.ADMIN_PASSWORD?.trim()
+    if (!email || !password) return
 
     try {
       const existing = await payload.find({
         collection: 'users',
+        where: { email: { equals: email } },
         limit: 1,
         overrideAccess: true,
       })
-      if (existing.totalDocs > 0) return
 
-      await payload.create({
-        collection: 'users',
-        overrideAccess: true,
-        data: { email, password },
-      })
-      payload.logger.info(`Seeded admin user ${email}`)
+      if (existing.totalDocs === 0) {
+        await payload.create({
+          collection: 'users',
+          overrideAccess: true,
+          data: { email, password },
+        })
+      } else {
+        await payload.update({
+          collection: 'users',
+          id: existing.docs[0].id,
+          overrideAccess: true,
+          data: { password },
+        })
+      }
     } catch (error) {
       payload.logger.error({ err: error, msg: 'Admin user seed skipped' })
     }
