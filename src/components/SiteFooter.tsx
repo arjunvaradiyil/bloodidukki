@@ -38,13 +38,14 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
           />
         </svg>
       </div>
-      <footer className="relative z-[3] grid grid-cols-1 items-center gap-2 px-4 py-3 lg:grid-cols-[7.5rem_minmax(0,1fr)_7.5rem] lg:gap-3 lg:py-3.5">
+      <footer className="relative z-[3] px-4 py-3 lg:py-3.5">
         {pulse ? (
-          <PulseMark className="hidden w-full justify-self-start lg:block" />
-        ) : (
-          <span className="hidden lg:block" />
-        )}
-        <div className="min-w-0 px-1 text-center font-display text-[0.72rem] font-semibold tracking-wide text-white sm:text-[0.8rem]">
+          <>
+            <PulseMark className="pointer-events-none absolute top-1/2 left-2 w-[3.75rem] -translate-y-1/2 sm:left-3 sm:w-[5.5rem] lg:left-4 lg:w-[7.5rem]" />
+            <PulseMark className="pointer-events-none absolute top-1/2 right-2 w-[3.75rem] -translate-y-1/2 sm:right-3 sm:w-[5.5rem] lg:right-4 lg:w-[7.5rem]" />
+          </>
+        ) : null}
+        <div className="relative mx-auto min-w-0 text-center font-display text-[0.72rem] font-semibold tracking-wide text-white sm:text-[0.8rem]">
           <p className="m-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-5">
             <span>© 2026 {SITE_NAME.plain}</span>
             <span className="hidden text-white/45 sm:inline" aria-hidden="true">
@@ -64,11 +65,6 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
             Website powered by DYFI Idukki District Professional Sub Committee · {SITE_NAME.plain}
           </p>
         </div>
-        {pulse ? (
-          <PulseMark className="hidden w-full justify-self-end lg:block" />
-        ) : (
-          <span className="hidden lg:block" />
-        )}
       </footer>
     </div>
   )

@@ -28,7 +28,10 @@ export async function PageShell({
     <div className="relative min-h-dvh bg-ink">
       <SiteHeader {...defaultHeader} />
       {hero ? (
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] overflow-hidden" aria-hidden="true">
+        <div
+          className="pointer-events-none absolute inset-x-0 top-0 h-[28rem] overflow-hidden"
+          aria-hidden="true"
+        >
           <img
             src={HERO_BACKGROUND}
             alt=""
@@ -40,12 +43,18 @@ export async function PageShell({
 
       <div className="relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[calc(5.75rem+2.25rem)] pb-16 max-sm:w-[min(calc(100%-1.5rem),1180px)]">
         {compact ? null : (
-          <p className="m-0 mb-3 text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">{eyebrow}</p>
+          <p className="m-0 mb-3 text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">
+            {eyebrow}
+          </p>
         )}
         <h1
           className={cn(
             'm-0 max-w-[42rem] font-display font-extrabold tracking-tight leading-[1.08]',
-            compact ? 'text-[clamp(1.9rem,4vw,2.6rem)]' : hero ? 'text-[clamp(2.35rem,6vw,4.1rem)]' : 'text-[clamp(2rem,5vw,3.4rem)]',
+            compact
+              ? 'text-[clamp(1.9rem,4vw,2.6rem)]'
+              : hero
+                ? 'text-[clamp(2.35rem,6vw,4.1rem)]'
+                : 'text-[clamp(2rem,5vw,3.4rem)]',
           )}
         >
           <span className="text-white">{title}</span>
@@ -57,7 +66,9 @@ export async function PageShell({
           ) : null}
         </h1>
         {description && !compact ? (
-          <p className="mt-4 max-w-[40rem] text-[1.05rem] leading-[1.65] text-white/75">{description}</p>
+          <p className="mt-4 max-w-[40rem] text-[1.05rem] leading-[1.65] text-white/75">
+            {description}
+          </p>
         ) : null}
         <div className={compact ? 'mt-6' : hero ? 'mt-12' : 'mt-10'}>{children}</div>
       </div>

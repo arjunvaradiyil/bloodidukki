@@ -92,7 +92,7 @@ function PanelOverlay({ children, center = false }: { children: ReactNode; cente
           {children}
         </div>
       </div>
-      <SiteFooter />
+      <SiteFooter pulse />
     </div>
   )
 }
