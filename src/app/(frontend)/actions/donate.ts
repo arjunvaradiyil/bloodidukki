@@ -3,7 +3,7 @@
 import { ValidationError } from 'payload'
 import { BLOOD_GROUPS, BLOCKS, DISTRICT, GENDERS } from '@/lib/idukki'
 import { toPayloadDate, validateDonation, valuesFromFormData } from '@/lib/donate-validation'
-import { getWritablePayload, withDeadline } from '@/lib/payload-client'
+import { describeError, getWritablePayload, withDeadline } from '@/lib/payload-client'
 
 export type DonateState = {
   ok: boolean
@@ -71,7 +71,7 @@ export async function submitDonation(
       'Donation save timed out',
     )
   } catch (error) {
-    console.error('Donation submit failed', error)
+    console.error('Donation submit failed', describeError(error))
 
     if (error instanceof ValidationError) {
       const nextFieldErrors: Record<string, string> = {}

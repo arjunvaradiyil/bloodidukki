@@ -2,7 +2,7 @@
 
 import { ValidationError } from 'payload'
 import { contactValuesFromFormData, validateContact } from '@/lib/contact-validation'
-import { getWritablePayload, withDeadline } from '@/lib/payload-client'
+import { describeError, getWritablePayload, withDeadline } from '@/lib/payload-client'
 
 export type ContactState = {
   ok: boolean
@@ -48,7 +48,7 @@ export async function submitContact(
       'Contact save timed out',
     )
   } catch (error) {
-    console.error('Contact submit failed', error)
+    console.error('Contact submit failed', describeError(error))
     if (error instanceof ValidationError) {
       const nextFieldErrors: Record<string, string> = {}
       const data = error.data as { errors?: { path?: string; message?: string }[] } | undefined

@@ -3,7 +3,7 @@
 import { ValidationError } from 'payload'
 import { BLOOD_GROUPS, isBlockValue } from '@/lib/idukki'
 import { localToday, toPayloadDate } from '@/lib/donate-validation'
-import { getWritablePayload, withDeadline } from '@/lib/payload-client'
+import { describeError, getWritablePayload, withDeadline } from '@/lib/payload-client'
 import { requestValuesFromFormData, validateBloodRequest } from '@/lib/request-validation'
 
 export type RequestState = {
@@ -68,7 +68,7 @@ export async function submitBloodRequest(
       'Blood request save timed out',
     )
   } catch (error) {
-    console.error('Blood request submit failed', error)
+    console.error('Blood request submit failed', describeError(error))
     if (error instanceof ValidationError) {
       const nextFieldErrors: Record<string, string> = {}
       const data = error.data as { errors?: { path?: string; message?: string }[] } | undefined

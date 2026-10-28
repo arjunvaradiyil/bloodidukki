@@ -24,6 +24,8 @@ const malayalam = Noto_Sans_Malayalam({
 })
 
 export const dynamic = 'force-dynamic'
+export const runtime = 'nodejs'
+export const maxDuration = 10
 
 export const metadata: Metadata = {
   title: SITE_NAME.full,
