@@ -33,6 +33,14 @@ export function LogoDropIcon({ className }: IconProps) {
   )
 }
 
+export function StarIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M12 2 14.25 8.91 21.51 8.91 15.63 13.18 17.88 20.09 12 15.82 6.12 20.09 8.37 13.18 2.49 8.91 9.75 8.91Z" />
+    </svg>
+  )
+}
+
 export function HeartIcon({ className }: IconProps) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">

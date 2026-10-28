@@ -13,7 +13,7 @@ export type RequestValues = {
 }
 
 const MOBILE_RE = /^[6-9]\d{9}$/
-const NAME_RE = /^[\p{L}][\p{L} .']{1,79}$/u
+const NAME_RE = /^[\p{L}][\p{L}\p{M} .']{1,79}$/u
 
 export function requestValuesFromFormData(formData: FormData): RequestValues {
   const read = (key: string) => String(formData.get(key) ?? '').trim()
@@ -59,4 +59,13 @@ export function validateBloodRequest(values: RequestValues, today: string) {
   else if (!MOBILE_RE.test(values.mobile)) fieldErrors.mobile = 'Enter a valid 10-digit mobile number.'
 
   return fieldErrors
+}
+
+export function errorForRequestField(
+  values: RequestValues,
+  key: keyof RequestValues,
+  today: string,
+) {
+  if (key === 'notes' && !values.notes.trim()) return ''
+  return validateBloodRequest(values, today)[key] || ''
 }

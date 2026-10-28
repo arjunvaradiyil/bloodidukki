@@ -1,6 +1,5 @@
 import { cache } from 'react'
-import { defaultHome, type StatIcon } from '@/lib/defaults'
-import { getMediaUrl } from '@/lib/media'
+import { defaultHome, HERO_BACKGROUND, type StatIcon } from '@/lib/defaults'
 import { getPayloadClient, withTimeout } from '@/lib/payload-client'
 import { getHeaderProps } from '@/lib/site-header'
 
@@ -46,11 +45,11 @@ export const getHomeView = cache(async () => {
       headlineAccent: hero.headlineAccent || defaultHome.hero.headlineAccent,
       subheadline: hero.subheadline || defaultHome.hero.subheadline,
       description: hero.description || defaultHome.hero.description,
-      backgroundImageUrl: getMediaUrl(hero.backgroundImage),
+      backgroundImageUrl: HERO_BACKGROUND,
       backgroundVideoUrl: hero.backgroundVideo || null,
       primaryCta: {
-        label: hero.primaryCta?.label || defaultHome.hero.primaryCta.label,
-        href: '/donate',
+        label: defaultHome.hero.primaryCta.label,
+        href: defaultHome.hero.primaryCta.href,
       },
       secondaryCta: {
         label: defaultHome.hero.secondaryCta.label,

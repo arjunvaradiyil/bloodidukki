@@ -1,13 +1,23 @@
+export const HERO_BACKGROUND = '/images/Caring Hands Blood Donation Scene.png'
+
+export const SITE_NAME = {
+  primary: 'Jeevanam',
+  accent: 'Idukki',
+  plain: 'Jeevanam Idukki',
+  full: 'Jeevanam — Idukki',
+  english: 'Jeevanam — Idukki',
+}
+
 export const defaultHeader = {
-  logoTextPrimary: 'DYFI',
-  logoTextAccent: 'IDUKKI',
+  logoTextPrimary: SITE_NAME.primary,
+  logoTextAccent: SITE_NAME.accent,
   navItems: [
-    { label: 'Find Hospitals', href: '/hospitals' },
-    { label: 'Request for Blood', href: '#' },
-    { label: 'Contact Us', href: '/contact' },
+    { label: 'Find Hospitals', href: '#hospitals' },
+    { label: 'Request for Blood', href: '#request' },
+    { label: 'Contact Us', href: '#contact' },
   ],
   ctaLabel: 'Donate Now',
-  ctaHref: '/donate',
+  ctaHref: '#donate',
 }
 
 export const defaultHome = {
@@ -19,8 +29,8 @@ export const defaultHome = {
       'Every drop you donate helps save lives, supports families, and builds a stronger community.',
     backgroundImage: null,
     backgroundVideo: '',
-    primaryCta: { label: 'Donate Blood', href: '/donate' },
-    secondaryCta: { label: 'Contact Us', href: '/contact' },
+    primaryCta: { label: 'Donate Blood', href: '#donate' },
+    secondaryCta: { label: 'Request Blood', href: '#request' },
   },
   stats: [
     { icon: 'drop' as const, value: '1 Pint', label: 'Can save up to 3 lives' },

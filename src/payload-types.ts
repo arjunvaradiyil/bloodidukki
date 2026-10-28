@@ -209,7 +209,22 @@ export interface Hospital {
   id: number;
   name: string;
   kind: 'hospital' | 'blood-bank';
-  block: 'adimaly' | 'azhutha' | 'devikulam' | 'elamdesam' | 'idukki' | 'kattappana' | 'nedumkandam' | 'peerumade';
+  block:
+    | 'elappara'
+    | 'peerumade'
+    | 'vandanmedu'
+    | 'kattappana'
+    | 'idukki'
+    | 'nedumkandam'
+    | 'santhanpara'
+    | 'rajakkad'
+    | 'adimali'
+    | 'munnar'
+    | 'marayur'
+    | 'moolamattom'
+    | 'thodupuzha-west'
+    | 'thodupuzha-east'
+    | 'karimannoor';
   place: string;
   address: string;
   phone?: string | null;
@@ -230,7 +245,22 @@ export interface BloodRequest {
   bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
   units: number;
   hospital: string;
-  block: 'adimaly' | 'azhutha' | 'devikulam' | 'elamdesam' | 'idukki' | 'kattappana' | 'nedumkandam' | 'peerumade';
+  block:
+    | 'elappara'
+    | 'peerumade'
+    | 'vandanmedu'
+    | 'kattappana'
+    | 'idukki'
+    | 'nedumkandam'
+    | 'santhanpara'
+    | 'rajakkad'
+    | 'adimali'
+    | 'munnar'
+    | 'marayur'
+    | 'moolamattom'
+    | 'thodupuzha-west'
+    | 'thodupuzha-east'
+    | 'karimannoor';
   neededBy: string;
   requesterName: string;
   mobile: string;

@@ -1,36 +1,45 @@
 export const DISTRICT = 'Idukki'
 
-/**
- * Block committee list for Idukki.
- * Replace these with the official committee names when you have them.
- */
 export const BLOCKS = [
-  { value: 'adimaly', label: 'Adimaly' },
-  { value: 'azhutha', label: 'Azhutha' },
-  { value: 'devikulam', label: 'Devikulam' },
-  { value: 'elamdesam', label: 'Elamdesam' },
-  { value: 'idukki', label: 'Idukki' },
-  { value: 'kattappana', label: 'Kattappana' },
-  { value: 'nedumkandam', label: 'Nedumkandam' },
+  { value: 'elappara', label: 'Elappara' },
   { value: 'peerumade', label: 'Peerumade' },
+  { value: 'vandanmedu', label: 'Vandanmedu' },
+  { value: 'kattappana', label: 'Kattappana' },
+  { value: 'idukki', label: 'Idukki' },
+  { value: 'nedumkandam', label: 'Nedumkandam' },
+  { value: 'santhanpara', label: 'Santhanpara' },
+  { value: 'rajakkad', label: 'Rajakkad' },
+  { value: 'adimali', label: 'Adimali' },
+  { value: 'munnar', label: 'Munnar' },
+  { value: 'marayur', label: 'Marayur' },
+  { value: 'moolamattom', label: 'Moolamattom' },
+  { value: 'thodupuzha-west', label: 'Thodupuzha West' },
+  { value: 'thodupuzha-east', label: 'Thodupuzha East' },
+  { value: 'karimannoor', label: 'Karimannoor' },
 ] as const
 
 export type BlockValue = (typeof BLOCKS)[number]['value']
 
 /**
  * Mekhala list keyed by block value.
- * Add names when the list is ready, e.g. adimaly: ['Mekhala A', 'Mekhala B'].
  * An empty list shows a text field instead of a dropdown.
  */
 export const MEKHALAS_BY_BLOCK: Record<BlockValue, string[]> = {
-  adimaly: [],
-  azhutha: [],
-  devikulam: [],
-  elamdesam: [],
-  idukki: [],
-  kattappana: [],
-  nedumkandam: [],
+  elappara: [],
   peerumade: [],
+  vandanmedu: [],
+  kattappana: [],
+  idukki: [],
+  nedumkandam: [],
+  santhanpara: [],
+  rajakkad: [],
+  adimali: [],
+  munnar: [],
+  marayur: [],
+  moolamattom: [],
+  'thodupuzha-west': [],
+  'thodupuzha-east': [],
+  karimannoor: [],
 }
 
 export const GENDERS = ['Male', 'Female', 'Other'] as const

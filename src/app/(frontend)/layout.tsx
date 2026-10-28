@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Sora, Manrope, Noto_Sans_Malayalam } from 'next/font/google'
 import React from 'react'
+import { SITE_NAME } from '@/lib/defaults'
 import './globals.css'
 
 const sora = Sora({
@@ -23,9 +24,8 @@ const malayalam = Noto_Sans_Malayalam({
 })
 
 export const metadata: Metadata = {
-  title: 'Donate Blood — One Donation. Countless Lives.',
-  description:
-    'Your blood can be someone’s second chance. Donate blood, find a camp, and help save lives in your community.',
+  title: SITE_NAME.full,
+  description: `${SITE_NAME.plain} connects donors with patients who need blood. Donate, find a hospital, or request support.`,
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

@@ -166,7 +166,7 @@ export function DonateForm() {
         <p className="m-0 mb-3 text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">Registered</p>
         <h2 className="m-0 font-display text-[clamp(1.35rem,2.4vw,1.75rem)] font-bold tracking-tight">Thank you for registering.</h2>
         <p className="mt-3 leading-[1.6] text-white/75">We have received your details. Our team will reach out with camp and slot information.</p>
-        <a href="/" className={cn(btnBase, btnPrimary, btnDefault, 'mt-6 w-full')}>
+        <a href="#home" className={cn(btnBase, btnPrimary, btnDefault, 'mt-6 w-full')}>
           Back to home
         </a>
       </div>

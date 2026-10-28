@@ -82,13 +82,13 @@ export const Home: GlobalConfig = {
             {
               name: 'label',
               type: 'text',
-              defaultValue: 'Find Hospitals',
+              defaultValue: 'Contact Us',
               required: true,
             },
             {
               name: 'href',
               type: 'text',
-              defaultValue: '/hospitals',
+              defaultValue: '#contact',
               required: true,
             },
           ],

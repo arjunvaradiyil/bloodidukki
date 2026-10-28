@@ -20,7 +20,8 @@ html {
 }
 
 html:has(.hero-lock),
-html:has(.hero-lock) body {
+html:has(.hero-lock) body,
+html:has(.hero-lock) body > main {
   height: 100%;
   overflow: hidden;
 }

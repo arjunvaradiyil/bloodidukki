@@ -11,14 +11,14 @@ export const Header: GlobalConfig = {
       name: 'logoTextPrimary',
       type: 'text',
       label: 'Logo text (primary)',
-      defaultValue: 'DYFI',
+      defaultValue: 'Jeevanam',
       required: true,
     },
     {
       name: 'logoTextAccent',
       type: 'text',
       label: 'Logo text (accent)',
-      defaultValue: 'IDUKKI',
+      defaultValue: 'Idukki',
       required: true,
     },
     {
@@ -29,7 +29,7 @@ export const Header: GlobalConfig = {
         singular: 'Link',
         plural: 'Links',
       },
-      minRows: 1,
+      minRows: 0,
       fields: [
         {
           name: 'label',
@@ -46,9 +46,9 @@ export const Header: GlobalConfig = {
         },
       ],
       defaultValue: [
-        { label: 'Find Hospitals', href: '/hospitals' },
-        { label: 'Request for Blood', href: '#' },
-        { label: 'Contact Us', href: '/contact' },
+        { label: 'Find Hospitals', href: '#hospitals' },
+        { label: 'Request for Blood', href: '#request' },
+        { label: 'Contact Us', href: '#contact' },
       ],
     },
     {

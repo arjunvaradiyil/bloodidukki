@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react'
 
 export function overlayStyleFor(
   anchor: DOMRect,
-  options?: { maxHeight?: number; width?: number; minHeight?: number },
+  options?: { maxHeight?: number; width?: number; minHeight?: number; needed?: number },
 ): CSSProperties {
   const gap = 6
   const margin = 8
@@ -12,7 +12,8 @@ export function overlayStyleFor(
   const left = Math.min(Math.max(margin, anchor.left), window.innerWidth - width - margin)
   const spaceBelow = window.innerHeight - anchor.bottom - gap - margin
   const spaceAbove = anchor.top - gap - margin
-  const openUp = spaceBelow < 160 && spaceAbove > spaceBelow
+  const needed = options?.needed ?? 160
+  const openUp = spaceBelow < needed && spaceAbove > spaceBelow
   const height = Math.min(maxHeight, Math.max(minHeight, openUp ? spaceAbove : spaceBelow))
 
   return {

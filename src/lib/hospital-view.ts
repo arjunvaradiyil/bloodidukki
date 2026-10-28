@@ -14,12 +14,12 @@ function asHospital(value: {
 }): Hospital | null {
   if (!value.name || !value.place || !value.address) return null
   if (value.kind !== 'hospital' && value.kind !== 'blood-bank') return null
-  if (!value.block || !isBlockValue(value.block)) return null
+  if (value.block && !isBlockValue(value.block)) return null
   if (value.active === false) return null
   return {
     name: value.name,
     kind: value.kind as HospitalKind,
-    block: value.block,
+    block: value.block || '',
     place: value.place,
     address: value.address,
     phone: value.phone || undefined,
@@ -45,5 +45,7 @@ export async function getHospitals(): Promise<Hospital[]> {
   const fromCms =
     result?.docs.map((doc) => asHospital(doc)).filter((item): item is Hospital => Boolean(item)) ??
     []
-  return fromCms.length > 0 ? fromCms : DEFAULT_HOSPITALS
+  const seen = new Set(DEFAULT_HOSPITALS.map((item) => item.name.toLowerCase()))
+  const extra = fromCms.filter((item) => !seen.has(item.name.toLowerCase()))
+  return [...DEFAULT_HOSPITALS, ...extra]
 }

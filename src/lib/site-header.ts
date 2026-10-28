@@ -11,16 +11,10 @@ export const getHeaderProps = cache(async () => {
     : null
 
   return {
-    logoTextPrimary:
-      headerDoc?.logoTextPrimary && headerDoc.logoTextPrimary !== 'DONATE'
-        ? headerDoc.logoTextPrimary
-        : defaultHeader.logoTextPrimary,
-    logoTextAccent:
-      headerDoc?.logoTextAccent && headerDoc.logoTextAccent !== 'BLOOD'
-        ? headerDoc.logoTextAccent
-        : defaultHeader.logoTextAccent,
+    logoTextPrimary: defaultHeader.logoTextPrimary,
+    logoTextAccent: defaultHeader.logoTextAccent,
     navItems: PAGE_NAV,
     ctaLabel: headerDoc?.ctaLabel || defaultHeader.ctaLabel,
-    ctaHref: '/donate',
+    ctaHref: defaultHeader.ctaHref,
   }
 })

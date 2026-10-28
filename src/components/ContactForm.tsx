@@ -1,7 +1,6 @@
 'use client'
 
 import { useActionState } from 'react'
-import Link from 'next/link'
 import { Field } from '@/components/Field'
 import { submitContact, type ContactState } from '@/app/(frontend)/actions/contact'
 import { cn } from '@/lib/cn'
@@ -18,9 +17,9 @@ export function ContactForm() {
         <p className="m-0 mb-3 text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">Message sent</p>
         <h2 className="m-0 font-display text-[1.6rem] font-bold">Thank you for writing to us.</h2>
         <p className="mt-3 leading-[1.6] text-white/75">The DYFI Idukki team will get back to you.</p>
-        <Link href="/" className={cn(btnBase, btnPrimary, btnDefault, 'mt-6')}>
+        <a href="#home" className={cn(btnBase, btnPrimary, btnDefault, 'mt-6')}>
           Back to home
-        </Link>
+        </a>
       </div>
     )
   }

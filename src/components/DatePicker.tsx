@@ -77,8 +77,9 @@ export function DatePicker({
       const anchor = trigger.getBoundingClientRect()
       setMenuStyle(
         overlayStyleFor(anchor, {
-          maxHeight: 360,
+          maxHeight: 400,
           minHeight: 220,
+          needed: 400,
           width: Math.max(anchor.width, 220),
         }),
       )
