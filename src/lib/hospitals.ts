@@ -83,6 +83,62 @@ export const DEFAULT_HOSPITALS: Hospital[] = [
     lat: 9.713,
     lng: 76.688,
   },
+  {
+    name: 'BMH',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'BMH, Thodupuzha, Idukki',
+  },
+  {
+    name: 'Smitha Memorial',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'Smitha Memorial Hospital, Thodupuzha, Idukki',
+  },
+  {
+    name: 'St. Mary’s',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'St. Mary’s Hospital, Thodupuzha, Idukki',
+  },
+  {
+    name: 'Holy Family',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Muthalakodam',
+    address: 'Holy Family Hospital, Muthalakodam, Thodupuzha, Idukki',
+  },
+  {
+    name: 'Al Azhar Medical College',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Ezhalloor',
+    address: 'Al Azhar Medical College, Ezhalloor, Thodupuzha, Idukki',
+  },
+  {
+    name: 'District Hospital Thodupuzha',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'District Hospital, Thodupuzha, Idukki',
+  },
+  {
+    name: 'District Co-operative Hospital',
+    kind: 'hospital',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'District Co-operative Hospital, Thodupuzha, Idukki',
+  },
+  {
+    name: 'IMA Blood Bank Thodupuzha',
+    kind: 'blood-bank',
+    block: 'thodupuzha-east',
+    place: 'Thodupuzha',
+    address: 'IMA Blood Bank, Thodupuzha, Idukki',
+  },
 ]
 
 export function blockLabel(value: string) {
