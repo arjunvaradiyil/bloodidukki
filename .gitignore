@@ -37,6 +37,7 @@ atlas-credentials.env
 # sqlite
 .db
 *.db
+.data/
 
 # vercel
 .vercel

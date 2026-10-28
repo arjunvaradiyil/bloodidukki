@@ -1,9 +1,9 @@
 'use server'
 
-import { ValidationError } from 'payload'
 import { BLOOD_GROUPS, isBlockValue } from '@/lib/idukki'
+import { persistForm } from '@/lib/form-store'
 import { localToday, toPayloadDate } from '@/lib/donate-validation'
-import { describeError, getWritablePayload, withDeadline } from '@/lib/payload-client'
+import { describeError } from '@/lib/payload-client'
 import { requestValuesFromFormData, validateBloodRequest } from '@/lib/request-validation'
 
 export type RequestState = {
@@ -11,8 +11,6 @@ export type RequestState = {
   error: string | null
   fieldErrors?: Record<string, string>
 }
-
-const WRITE_TIMEOUT_MS = 8000
 
 export async function submitBloodRequest(
   _prev: RequestState,
@@ -43,42 +41,19 @@ export async function submitBloodRequest(
   }
 
   try {
-    const payload = await getWritablePayload()
-    if (!payload) {
-      return { ok: false, error: 'Could not submit right now. Please try again.' }
-    }
-
-    await withDeadline(
-      payload.create({
-        collection: 'blood-requests',
-        overrideAccess: true,
-        data: {
-          patientName: values.patientName,
-          bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
-          units: Number(values.units),
-          hospital: values.hospital,
-          block: values.block,
-          neededBy,
-          requesterName: values.requesterName,
-          mobile: values.mobile,
-          notes: values.notes || undefined,
-        },
-      }),
-      WRITE_TIMEOUT_MS,
-      'Blood request save timed out',
-    )
+    await persistForm('blood-requests', {
+      patientName: values.patientName,
+      bloodGroup: values.bloodGroup as (typeof BLOOD_GROUPS)[number],
+      units: Number(values.units),
+      hospital: values.hospital,
+      block: values.block,
+      neededBy,
+      requesterName: values.requesterName,
+      mobile: values.mobile,
+      notes: values.notes || undefined,
+    })
   } catch (error) {
     console.error('Blood request submit failed', describeError(error))
-    if (error instanceof ValidationError) {
-      const nextFieldErrors: Record<string, string> = {}
-      const data = error.data as { errors?: { path?: string; message?: string }[] } | undefined
-      for (const item of data?.errors ?? []) {
-        if (item.path && item.message) nextFieldErrors[item.path] = item.message
-      }
-      if (Object.keys(nextFieldErrors).length > 0) {
-        return { ok: false, error: 'Please fix the highlighted fields.', fieldErrors: nextFieldErrors }
-      }
-    }
     return { ok: false, error: 'Could not submit right now. Please try again.' }
   }
 
