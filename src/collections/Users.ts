@@ -6,6 +6,7 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   auth: {
+    useSessions: false,
     cookies: {
       sameSite: 'Lax',
       secure: Boolean(process.env.VERCEL),

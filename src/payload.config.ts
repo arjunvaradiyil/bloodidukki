@@ -104,7 +104,7 @@ export default buildConfig({
         },
         allowIDOnCreate: true,
         busyTimeout: 5000,
-        push: true,
+        push: false,
         prodMigrations: migrations,
       }),
   sharp,

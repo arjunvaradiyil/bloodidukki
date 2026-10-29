@@ -1,14 +1,16 @@
-import type { Payload } from 'payload'
+import type { AdminViewServerProps } from 'payload'
 
-type AdminDashboardProps = {
-  payload: Payload
-  user?: { email?: string | null } | null
-  visibleEntities?: { collections: string[] }
-}
-
-export function AdminDashboard({ payload, user, visibleEntities }: AdminDashboardProps) {
-  const adminRoute = payload.config.routes.admin
-  const collections = payload.config.collections.filter((collection) => {
+export function AdminDashboard({
+  initPageResult,
+  payload: payloadFromProps,
+  user: userFromProps,
+  visibleEntities: visibleFromProps,
+}: AdminViewServerProps) {
+  const payload = payloadFromProps || initPageResult?.req?.payload
+  const user = userFromProps || initPageResult?.req?.user
+  const visibleEntities = visibleFromProps || initPageResult?.visibleEntities
+  const adminRoute = payload?.config.routes.admin || '/admin'
+  const collections = (payload?.config.collections || []).filter((collection) => {
     if (collection.admin?.hidden) return false
     if (!visibleEntities?.collections) return true
     return visibleEntities.collections.includes(collection.slug)
