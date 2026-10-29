@@ -75,6 +75,13 @@ export default buildConfig({
     meta: {
       titleSuffix: '— Donate Blood',
     },
+    components: {
+      views: {
+        dashboard: {
+          Component: '/components/AdminDashboard#AdminDashboard',
+        },
+      },
+    },
   },
   collections: [Users, Media, Donations, Hospitals, BloodRequests, ContactMessages],
   globals: [Header, Home],
@@ -95,6 +102,7 @@ export default buildConfig({
         client: {
           url: sqliteUrl(),
         },
+        allowIDOnCreate: true,
         busyTimeout: 5000,
         push: true,
         prodMigrations: migrations,
@@ -108,35 +116,15 @@ export default buildConfig({
     try {
       const existing = await payload.find({
         collection: 'users',
-        limit: 10,
+        limit: 1,
         overrideAccess: true,
       })
-      const match = existing.docs.find((user) => user.email === email)
-
-      if (match) {
-        await payload.update({
-          collection: 'users',
-          id: match.id,
-          overrideAccess: true,
-          data: { password },
-        })
-        return
-      }
-
-      if (existing.docs[0]) {
-        await payload.update({
-          collection: 'users',
-          id: existing.docs[0].id,
-          overrideAccess: true,
-          data: { email, password },
-        })
-        return
-      }
+      if (existing.totalDocs > 0) return
 
       await payload.create({
         collection: 'users',
         overrideAccess: true,
-        data: { email, password },
+        data: { id: 1, email, password },
       })
     } catch (error) {
       payload.logger.error({ err: error, msg: 'Admin user seed skipped' })

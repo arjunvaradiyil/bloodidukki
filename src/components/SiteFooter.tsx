@@ -70,9 +70,6 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
             Website powered by DYFI Idukki District Professional Sub Committee · {SITE_NAME.plain}
           </p>
         </div>
-        <p className="relative z-[4] mt-1 text-center text-[0.5rem] font-medium tracking-[0.06em] text-white/75 lowercase sm:absolute sm:right-3 sm:bottom-1.5 sm:mt-0 sm:text-right lg:right-5">
-          developed by faircode
-        </p>
       </footer>
     </div>
   )
