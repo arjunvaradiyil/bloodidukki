@@ -1,11 +1,11 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
-import os from 'os'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { sqliteFileUrl } from './lib/sqlite-path'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -36,16 +36,6 @@ function mongoUrl() {
 }
 
 const atlasUrl = mongoUrl()
-
-function sqliteUrl() {
-  if (process.env.VERCEL) {
-    return `file:${path.join(os.tmpdir(), 'bloodidukki.db')}`
-  }
-
-  const url = process.env.DATABASE_URL
-  if (url && !url.startsWith('mongodb')) return url
-  return 'file:./.db'
-}
 
 function useMongo() {
   if (!atlasUrl) return false
@@ -100,7 +90,7 @@ export default buildConfig({
       })
     : sqliteAdapter({
         client: {
-          url: sqliteUrl(),
+          url: sqliteFileUrl(),
         },
         allowIDOnCreate: true,
         busyTimeout: 5000,
