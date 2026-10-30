@@ -6,6 +6,13 @@ export const ContactMessages: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'mobile', 'email', 'createdAt'],
     description: 'Messages sent from the Contact Us page.',
+    components: {
+      views: {
+        list: {
+          Component: '/components/admin/SubmissionList#SubmissionList',
+        },
+      },
+    },
   },
   access: {
     create: () => true,

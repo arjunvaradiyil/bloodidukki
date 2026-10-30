@@ -1,24 +1,6 @@
-import { appendFile, mkdir } from 'fs/promises'
-import os from 'os'
-import path from 'path'
 import { describeError, getWritablePayload } from '@/lib/payload-client'
 import { sqliteFilePath } from '@/lib/sqlite-path'
-
-type FormKind = 'donations' | 'blood-requests' | 'contact-messages'
-
-function storeDir() {
-  return process.env.VERCEL ? os.tmpdir() : path.join(process.cwd(), '.data')
-}
-
-function jsonlPath() {
-  return path.join(storeDir(), 'submissions.jsonl')
-}
-
-async function persistJsonl(kind: FormKind, data: Record<string, unknown>) {
-  await mkdir(storeDir(), { recursive: true })
-  const record = { kind, at: new Date().toISOString(), data }
-  await appendFile(jsonlPath(), `${JSON.stringify(record)}\n`, 'utf8')
-}
+import { appendSubmission, type FormKind } from '@/lib/submission-log'
 
 function text(value: unknown) {
   return value == null ? null : String(value)
@@ -110,11 +92,7 @@ async function persistPayloadSqlite(kind: FormKind, data: Record<string, unknown
 }
 
 export async function persistForm(kind: FormKind, data: Record<string, unknown>) {
-  try {
-    await persistJsonl(kind, data)
-  } catch (error) {
-    console.error('JSONL form persist failed', describeError(error))
-  }
+  await appendSubmission(kind, data)
 
   try {
     const payload = await getWritablePayload()

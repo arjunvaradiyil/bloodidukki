@@ -6,6 +6,13 @@ export const Donations: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'mobile', 'bloodGroup', 'block', 'preferredDate', 'createdAt'],
     description: 'Donor registrations submitted from the website form.',
+    components: {
+      views: {
+        list: {
+          Component: '/components/admin/SubmissionList#SubmissionList',
+        },
+      },
+    },
   },
   access: {
     create: () => true,

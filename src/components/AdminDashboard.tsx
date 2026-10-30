@@ -1,6 +1,7 @@
 import type { AdminViewServerProps } from 'payload'
+import { importSubmissions, listSubmissions } from '@/lib/submission-log'
 
-export function AdminDashboard({
+export async function AdminDashboard({
   initPageResult,
   payload: payloadFromProps,
   user: userFromProps,
@@ -10,6 +11,14 @@ export function AdminDashboard({
   const user = userFromProps || initPageResult?.req?.user
   const visibleEntities = visibleFromProps || initPageResult?.visibleEntities
   const adminRoute = payload?.config.routes.admin || '/admin'
+  if (payload) {
+    try {
+      await importSubmissions(payload)
+    } catch {
+      // Collection links still work if this instance cannot import the shared log.
+    }
+  }
+  const recent = await listSubmissions()
   const collections = (payload?.config.collections || []).filter((collection) => {
     if (collection.admin?.hidden) return false
     if (!visibleEntities?.collections) return true
@@ -21,6 +30,7 @@ export function AdminDashboard({
       <h1 className="dashboard__label">Dashboard</h1>
       <p style={{ margin: '0 0 1.25rem', opacity: 0.72 }}>
         Signed in as {user?.email || 'admin'}
+        {recent.length ? ` · ${recent.length} form ${recent.length === 1 ? 'submission' : 'submissions'}` : ''}
       </p>
       <ul
         style={{
