@@ -113,7 +113,7 @@ export function Hero({
   )
 
   return (
-    <section className="relative isolate flex h-full min-h-0 flex-col overflow-hidden bg-blood-wave" id="home">
+    <section className="relative isolate flex min-h-full flex-col bg-blood-wave" id="home">
       <div className="pointer-events-none absolute inset-0 z-0" aria-hidden="true">
         {backgroundVideoUrl ? (
           <video
@@ -139,7 +139,7 @@ export function Hero({
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,4,6,0.9)_0%,rgba(8,4,6,0.78)_32%,rgba(8,4,6,0.42)_58%,rgba(8,4,6,0.16)_100%),linear-gradient(180deg,rgba(0,0,0,0.4)_0%,rgba(0,0,0,0.18)_42%,rgba(0,0,0,0.52)_100%)]" />
       </div>
 
-      <div className="relative z-[2] flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain pt-[6.5rem] pb-4 max-sm:pt-[6.25rem] max-sm:pb-3">
+      <div className="relative z-[2] flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-y-contain pt-[6.5rem] pb-4 max-sm:pt-[6.25rem] max-sm:pb-3">
       {form ? (
         <div className="mx-auto my-auto flex w-[min(1180px,calc(100%-2.5rem))] items-center justify-center gap-[clamp(2rem,5vw,4.5rem)] max-lg:flex-col max-lg:items-stretch max-lg:gap-4 max-sm:w-[min(calc(100%-1.5rem),1240px)]">
           <div className="m-0 flex w-auto max-w-[36rem] flex-1 basis-[28rem] animate-rise flex-col justify-center gap-[clamp(0.85rem,2vh,1.5rem)] p-0 motion-reduce:animate-none max-lg:max-w-none max-lg:flex-none max-lg:gap-3">

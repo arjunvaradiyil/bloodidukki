@@ -26,7 +26,7 @@ export const Donations: CollectionConfig = {
       options: [
         { label: 'Male', value: 'Male' },
         { label: 'Female', value: 'Female' },
-        { label: 'Transgender', value: 'Transgender' },
+        { label: 'Other', value: 'Other' },
       ],
     },
     {

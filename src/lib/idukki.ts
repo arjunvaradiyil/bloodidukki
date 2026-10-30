@@ -42,7 +42,7 @@ export const MEKHALAS_BY_BLOCK: Record<BlockValue, string[]> = {
   karimannoor: [],
 }
 
-export const GENDERS = ['Male', 'Female', 'Transgender'] as const
+export const GENDERS = ['Male', 'Female', 'Other'] as const
 export const BLOOD_GROUPS = ['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'] as const
 
 export function isBlockValue(value: string): value is BlockValue {

@@ -161,12 +161,12 @@ export function DatePicker({
         ? createPortal(
             <div
               ref={panelRef}
-              className="z-[120] rounded-xl border border-white/12 bg-[#171217] px-2 py-2 shadow-[0_18px_36px_rgba(0,0,0,0.45)]"
+              className="z-[120] flex flex-col overflow-hidden rounded-xl border border-white/12 bg-[#171217] px-2 py-2 shadow-[0_18px_36px_rgba(0,0,0,0.45)]"
               role="dialog"
               aria-label="Choose date"
               style={menuStyle}
             >
-              <div className="mb-1.5 flex items-center justify-between gap-2">
+              <div className="mb-1.5 flex shrink-0 items-center justify-between gap-2">
                 <p className="m-0 font-display text-[0.78rem] font-bold">
                   {MONTHS[view.month]} {view.year}
                 </p>
@@ -198,6 +198,7 @@ export function DatePicker({
                 ))}
               </div>
 
+              <div className="min-h-0 flex-1 overflow-y-auto">
               <div className="grid grid-cols-7">
                 {days.map((item) => (
                   <button
@@ -224,8 +225,9 @@ export function DatePicker({
                   </button>
                 ))}
               </div>
+              </div>
 
-              <div className="mt-1.5 flex justify-between px-1 text-[0.75rem]">
+              <div className="mt-2 flex shrink-0 items-center justify-between gap-3 border-t border-white/12 px-1 pt-2 text-[0.75rem]">
                 <button type="button" className="text-white/70 hover:text-white" onClick={() => onChange('')}>
                   Clear
                 </button>

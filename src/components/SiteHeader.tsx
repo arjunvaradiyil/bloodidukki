@@ -53,7 +53,7 @@ export function SiteHeader({
     'inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-full bg-gradient-to-r from-blood-deep to-[#f26a2c] px-2.5 font-display text-[0.82rem] font-semibold text-white shadow-[0_8px_20px_rgba(225,29,46,0.28)] transition hover:brightness-110 sm:gap-1.5 sm:px-4 sm:text-[0.86rem]'
 
   const navClass =
-    'inline-flex h-10 items-center rounded-full px-2.5 text-[0.86rem] font-medium text-[#3a2428] transition-colors hover:bg-black/5 hover:text-blood xl:px-3 xl:text-[0.9rem]'
+    'inline-flex h-10 items-center rounded-full px-2.5 text-[0.86rem] font-bold text-[#3a2428] transition-colors hover:bg-black/5 hover:text-blood xl:px-3 xl:text-[0.9rem]'
 
   const cta = onDonate ? (
     <button
@@ -185,7 +185,7 @@ export function SiteHeader({
                       href={item.href}
                       prefetch={false}
                       className={cn(
-                        'block rounded-full px-4 py-3 text-base font-medium text-[#2b1a1d]',
+                        'block rounded-full px-4 py-3 text-base font-bold text-[#2b1a1d]',
                         pathname.startsWith(item.href) && 'bg-black/5 text-blood',
                       )}
                       onClick={() => setOpen(false)}
@@ -196,7 +196,7 @@ export function SiteHeader({
                     <button
                       type="button"
                       className={cn(
-                        'block w-full rounded-full px-4 py-3 text-left text-base font-medium text-[#2b1a1d]',
+                        'block w-full rounded-full px-4 py-3 text-left text-base font-bold text-[#2b1a1d]',
                         activeHref === item.href && 'bg-black/5 text-blood',
                       )}
                       onClick={() => {

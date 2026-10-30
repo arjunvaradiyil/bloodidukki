@@ -23,7 +23,12 @@ html:has(.hero-lock),
 html:has(.hero-lock) body,
 html:has(.hero-lock) body > main {
   height: 100%;
+  max-height: 100dvh;
   overflow: hidden;
+}
+
+.hero-lock {
+  -webkit-overflow-scrolling: touch;
 }
 
 @keyframes hero-ken {

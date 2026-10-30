@@ -12,7 +12,7 @@ export function overlayStyleFor(
   const left = Math.min(Math.max(margin, anchor.left), window.innerWidth - width - margin)
   const spaceBelow = window.innerHeight - anchor.bottom - gap - margin
   const spaceAbove = anchor.top - gap - margin
-  const needed = options?.needed ?? 160
+  const needed = options?.needed ?? 220
   const openUp = spaceBelow < needed && spaceAbove > spaceBelow
   const height = Math.min(maxHeight, Math.max(minHeight, openUp ? spaceAbove : spaceBelow))
 

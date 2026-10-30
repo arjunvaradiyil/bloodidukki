@@ -63,6 +63,15 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
     setPage(1)
   }, [query, block, pageSize])
 
+  useEffect(() => {
+    const needle = query.trim().toLowerCase()
+    if (!needle) return
+    const match = listedBlocks.find(
+      (item) => item.label.toLowerCase() === needle || item.value === needle,
+    )
+    if (match) setBlock(match.value)
+  }, [listedBlocks, query])
+
   function goTo(next: number) {
     setPage(next)
     const scroller = rootRef.current?.closest('.overflow-y-auto')
@@ -188,7 +197,7 @@ export function HospitalDirectory({ hospitals }: HospitalDirectoryProps) {
       )}
 
       {results.length > pageSize ? (
-        <nav className="mt-3 mb-1 flex flex-wrap items-center justify-center gap-1.5 max-sm:mt-2.5" aria-label="Hospital pages">
+        <nav className="relative z-10 mt-5 mb-10 flex flex-wrap items-center justify-center gap-1.5 max-sm:mt-4 max-sm:mb-12" aria-label="Hospital pages">
           <button
             type="button"
             className={cn(btnBase, btnGhost, 'min-h-8 px-3 text-[0.78rem]')}

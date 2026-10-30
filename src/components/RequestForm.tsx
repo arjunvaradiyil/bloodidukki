@@ -57,7 +57,7 @@ function FieldError({ message }: { message?: string }) {
   )
 }
 
-export function RequestForm() {
+export function RequestForm({ onClose }: { onClose?: () => void }) {
   const [state, formAction, pending] = useActionState(submitBloodRequest, initialState)
   const [values, setValues] = useState(emptyValues)
   const [index, setIndex] = useState(0)
@@ -319,9 +319,12 @@ export function RequestForm() {
         <button
           type="button"
           className={cn(btnBase, btnGhost, btnDefault, 'w-full')}
-          disabled={stepIndex === 0}
           onClick={() => {
             setStepError('')
+            if (stepIndex === 0) {
+              onClose?.()
+              return
+            }
             setIndex((current) => Math.max(0, current - 1))
           }}
         >

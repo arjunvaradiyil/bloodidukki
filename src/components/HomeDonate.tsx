@@ -70,7 +70,15 @@ function panelFromHash(hash: string): Panel {
   return null
 }
 
-function PanelOverlay({ children, center = false }: { children: ReactNode; center?: boolean }) {
+function PanelOverlay({
+  children,
+  center = false,
+  onBack,
+}: {
+  children: ReactNode
+  center?: boolean
+  onBack?: () => void
+}) {
   return (
     <div className="absolute inset-0 z-30 flex flex-col overflow-hidden">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
@@ -81,14 +89,23 @@ function PanelOverlay({ children, center = false }: { children: ReactNode; cente
         />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(8,4,6,0.72)_0%,rgba(8,4,6,0.88)_42%,rgba(8,4,6,0.96)_100%),linear-gradient(90deg,rgba(8,4,6,0.7)_0%,rgba(8,4,6,0.35)_100%)]" />
       </div>
-      <div className="relative min-h-0 flex-1 overflow-y-auto scroll-pb-[8.5rem]">
+      <div className="relative min-h-0 flex-1 overflow-y-auto overscroll-y-contain scroll-pb-[12rem]">
         <div
           className={
             center
-              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[8.5rem] max-sm:px-4 max-sm:pt-[5.75rem] max-sm:pb-[6.75rem]'
-              : 'relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[6.75rem] pb-[8.5rem] max-sm:w-[min(calc(100%-1.25rem),1180px)] max-sm:pt-[5.75rem] max-sm:pb-[6.75rem]'
+              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[12rem] max-sm:px-4 max-sm:pt-[5.75rem] max-sm:pb-[10rem]'
+              : 'relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[6.75rem] pb-[12rem] max-sm:w-[min(calc(100%-1.25rem),1180px)] max-sm:pt-[5.75rem] max-sm:pb-[10rem]'
           }
         >
+          {onBack ? (
+            <button
+              type="button"
+              className="mb-4 inline-flex min-h-9 items-center rounded-full border border-white/16 bg-white/8 px-3.5 text-[0.82rem] font-semibold text-white/90 hover:bg-white/14"
+              onClick={onBack}
+            >
+              Back to home
+            </button>
+          ) : null}
           {children}
         </div>
       </div>
@@ -100,17 +117,28 @@ function PanelOverlay({ children, center = false }: { children: ReactNode; cente
 export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDonateProps) {
   const [panel, setPanel] = useState<Panel>(formOpen ? 'donate' : null)
 
-  function openPanel(next: Panel) {
+  function openPanel(next: Panel, mode: 'push' | 'replace' = 'push') {
     setPanel(next)
     const url = next ? `/#${next}` : '/'
-    window.history.replaceState(null, '', url)
+    const state = { panel: next }
+    if (mode === 'replace') window.history.replaceState(state, '', url)
+    else window.history.pushState(state, '', url)
   }
 
   useEffect(() => {
+    const current = panelFromHash(window.location.hash)
+    if (current && window.history.state?.panel === undefined) {
+      window.history.replaceState({ panel: null }, '', '/')
+      window.history.pushState({ panel: current }, '', `/#${current}`)
+    }
     const sync = () => setPanel(panelFromHash(window.location.hash))
     sync()
     window.addEventListener('hashchange', sync)
-    return () => window.removeEventListener('hashchange', sync)
+    window.addEventListener('popstate', sync)
+    return () => {
+      window.removeEventListener('hashchange', sync)
+      window.removeEventListener('popstate', sync)
+    }
   }, [])
 
   useEffect(() => {
@@ -131,7 +159,13 @@ export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDo
   }
 
   return (
-    <div className="hero-lock relative h-dvh overflow-hidden">
+    <div
+      className={
+        panel
+          ? 'hero-lock relative h-dvh overflow-hidden'
+          : 'hero-lock relative h-dvh overflow-x-hidden overflow-y-auto overscroll-y-contain'
+      }
+    >
       <SiteHeader
         {...header}
         activeHref={panel ? `#${panel}` : undefined}
@@ -143,11 +177,15 @@ export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDo
         onDonate={() => openPanel('donate')}
         onRequest={() => openPanel('request')}
         form={
-          panel === 'donate' ? <DonateForm /> : panel === 'request' ? <RequestForm /> : undefined
+          panel === 'donate' ? (
+            <DonateForm onClose={() => openPanel(null)} />
+          ) : panel === 'request' ? (
+            <RequestForm onClose={() => openPanel(null)} />
+          ) : undefined
         }
       />
       {panel === 'hospitals' ? (
-        <PanelOverlay>
+        <PanelOverlay onBack={() => openPanel(null)}>
           <p className="m-0 mb-1.5 text-[0.7rem] font-bold tracking-[0.16em] text-white/55 uppercase max-sm:mb-1">
             Idukki directory
           </p>
@@ -161,17 +199,17 @@ export function HomeDonate({ header, hero, hospitals, formOpen = false }: HomeDo
         </PanelOverlay>
       ) : null}
       {panel === 'contact' ? (
-        <PanelOverlay>
+        <PanelOverlay onBack={() => openPanel(null)}>
           <ContactPeople />
         </PanelOverlay>
       ) : null}
       {panel === 'privacy' ? (
-        <PanelOverlay center>
+        <PanelOverlay center onBack={() => openPanel(null)}>
           <LegalPanel kind="privacy" />
         </PanelOverlay>
       ) : null}
       {panel === 'policy' ? (
-        <PanelOverlay center>
+        <PanelOverlay center onBack={() => openPanel(null)}>
           <LegalPanel kind="policy" />
         </PanelOverlay>
       ) : null}

@@ -83,7 +83,7 @@ function FieldError({ message }: { message?: string }) {
   )
 }
 
-export function DonateForm() {
+export function DonateForm({ onClose }: { onClose?: () => void }) {
   const [state, formAction, pending] = useActionState(submitDonation, initialState)
   const [values, setValues] = useState(emptyValues)
   const [index, setIndex] = useState(0)
@@ -411,9 +411,12 @@ export function DonateForm() {
         <button
           type="button"
           className={cn(btnBase, btnGhost, btnDefault, 'w-full')}
-          disabled={stepIndex === 0}
           onClick={() => {
             setStepError('')
+            if (stepIndex === 0) {
+              onClose?.()
+              return
+            }
             setIndex((current) => Math.max(0, current - 1))
           }}
         >

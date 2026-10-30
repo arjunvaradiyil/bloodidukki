@@ -181,7 +181,7 @@ export interface Donation {
   block: string;
   mekhala: string;
   age: number;
-  gender: 'Male' | 'Female' | 'Transgender';
+  gender: 'Male' | 'Female' | 'Other';
   bloodGroup: 'A+' | 'A-' | 'B+' | 'B-' | 'O+' | 'O-' | 'AB+' | 'AB-';
   mobile: string;
   email?: string | null;

@@ -50,20 +50,20 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
             <PulseMark className="pointer-events-none absolute top-1/2 right-2 w-[3.75rem] -translate-y-1/2 sm:right-3 sm:w-[5.5rem] lg:right-4 lg:w-[7.5rem]" />
           </>
         ) : null}
-        <div className="relative mx-auto min-w-0 text-center font-display text-[0.72rem] font-semibold tracking-wide text-white sm:text-[0.8rem]">
-          <p className="m-0 flex flex-wrap items-center justify-center gap-x-3 gap-y-1 sm:gap-x-5">
+        <div className="relative mx-auto min-w-0 px-16 text-center font-display text-[0.78rem] font-semibold tracking-wide text-white sm:px-24 sm:text-[0.88rem]">
+          <p className="m-0 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 sm:gap-x-7">
             <span>© 2026 {SITE_NAME.plain}</span>
-            <span className="hidden text-white/45 sm:inline" aria-hidden="true">
+            <span className="text-white/45" aria-hidden="true">
               ·
             </span>
-            <a href="#privacy" className="underline-offset-2 hover:underline">
-              Privacy
+            <a href="#privacy" className="whitespace-nowrap underline-offset-2 hover:underline">
+              Privacy Policy
             </a>
-            <span className="hidden text-white/45 sm:inline" aria-hidden="true">
+            <span className="text-white/45" aria-hidden="true">
               ·
             </span>
-            <a href="#policy" className="underline-offset-2 hover:underline">
-              Policy
+            <a href="#policy" className="whitespace-nowrap underline-offset-2 hover:underline">
+              Site Policy
             </a>
           </p>
           <p className="m-0 mt-1 text-[0.62rem] leading-snug font-medium tracking-[0.02em] text-balance text-white/85 sm:text-[0.72rem]">
