@@ -28,6 +28,63 @@ function token() {
   )
 }
 
+function kvUrl() {
+  return (
+    process.env.KV_REST_API_URL?.trim() ||
+    process.env.UPSTASH_REDIS_REST_URL?.trim() ||
+    ''
+  )
+}
+
+function kvToken() {
+  return (
+    process.env.KV_REST_API_TOKEN?.trim() ||
+    process.env.UPSTASH_REDIS_REST_TOKEN?.trim() ||
+    ''
+  )
+}
+
+const KV_KEY = process.env.SUBMISSIONS_KV_KEY?.trim() || 'bloodidukki:submissions'
+
+async function kvCommand(command: Array<string | number>) {
+  const url = kvUrl()
+  const auth = kvToken()
+  if (!url || !auth) return null
+
+  const res = await fetch(url.replace(/\/$/, ''), {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${auth}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(command),
+    cache: 'no-store',
+  })
+  if (!res.ok) throw new Error(`KV command failed (${res.status})`)
+  return (await res.json()) as { result?: unknown }
+}
+
+async function readKv(): Promise<SubmissionRecord[]> {
+  const json = await kvCommand(['LRANGE', KV_KEY, 0, -1])
+  if (!json) return []
+
+  const rows = Array.isArray(json.result) ? json.result : []
+  return rows
+    .map((item) => {
+      try {
+        return typeof item === 'string' ? (JSON.parse(item) as SubmissionRecord) : null
+      } catch {
+        return null
+      }
+    })
+    .filter((item): item is SubmissionRecord => Boolean(item?.kind && item?.data))
+}
+
+async function writeKv(record: SubmissionRecord) {
+  const json = await kvCommand(['RPUSH', KV_KEY, JSON.stringify(record)])
+  return json != null
+}
+
 function repo() {
   return process.env.SUBMISSIONS_REPO?.trim() || ''
 }
@@ -111,7 +168,7 @@ export async function listSubmissions(kind?: FormKind): Promise<SubmissionRecord
   const local = await readJsonl()
   let remote: SubmissionRecord[] = []
   try {
-    remote = (await readGithub()).records
+    remote = [...(await readKv()), ...(await readGithub()).records]
   } catch (error) {
     console.error('Submission log read failed', describeError(error))
   }
@@ -138,6 +195,12 @@ export async function appendSubmission(kind: FormKind, data: Record<string, unkn
     await writeJsonl(record)
   } catch (error) {
     console.error('JSONL form persist failed', describeError(error))
+  }
+
+  try {
+    if (await writeKv(record)) return record
+  } catch (error) {
+    console.error('KV form persist failed', describeError(error))
   }
 
   if (!token() || !repo()) return record
@@ -200,5 +263,5 @@ export async function importSubmissions(payload: Payload) {
 }
 
 export function hasSharedLog() {
-  return Boolean(token())
+  return Boolean((kvUrl() && kvToken()) || (token() && repo()))
 }
