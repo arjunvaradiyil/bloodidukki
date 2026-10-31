@@ -26,6 +26,15 @@ function requireEnv(name: string) {
   throw new Error(`Missing required environment variable: ${name}`)
 }
 
+/** A linked Vercel Postgres/Neon store injects POSTGRES_URL, not DATABASE_URL. */
+function databaseUrl() {
+  for (const name of ['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL']) {
+    const value = process.env[name]?.trim()
+    if (value && /^postgres(ql)?:\/\//.test(value)) return value
+  }
+  return requireEnv('DATABASE_URL')
+}
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -51,7 +60,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
-    pool: { connectionString: requireEnv('DATABASE_URL') },
+    pool: { connectionString: databaseUrl() },
     migrationDir: path.resolve(dirname, 'migrations'),
     // Schema changes ship as migrations, never auto-push. Pending ones run on boot in production.
     push: false,
