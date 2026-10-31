@@ -32,9 +32,15 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     meta: {
-      titleSuffix: '— Donate Blood',
+      titleSuffix: '— Jeevanam Idukki',
+      description: 'Admin for Jeevanam Idukki: manage donors, hospitals, blood requests and contact messages.',
+      icons: [{ rel: 'icon', url: '/icon.png' }],
     },
     components: {
+      graphics: {
+        Logo: '/components/AdminLogo#AdminLogo',
+        Icon: '/components/AdminLogo#AdminIcon',
+      },
       views: {
         dashboard: {
           Component: '/components/AdminDashboard#AdminDashboard',
