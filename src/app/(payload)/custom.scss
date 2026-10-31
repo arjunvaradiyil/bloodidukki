@@ -1,0 +1,48 @@
+/* White and red theme for the Jeevanam Idukki admin. */
+:root,
+html[data-theme='light'] {
+  --blood: #e11d2e;
+  --blood-deep: #b8121f;
+  --blood-soft: #fde8ea;
+  --theme-bg: #ffffff;
+  --theme-input-bg: #ffffff;
+  --theme-elevation-0: #ffffff;
+  --theme-elevation-50: #fbf7f7;
+  --theme-elevation-100: #f6eeee;
+  --theme-elevation-150: #eadada;
+  --theme-text: #1a1113;
+}
+
+/* Primary actions: red instead of black. */
+.btn--style-primary {
+  --bg-color: var(--blood);
+  --color: #fff;
+  --hover-bg: var(--blood-deep);
+  --hover-color: #fff;
+}
+
+.btn--style-secondary {
+  --bg-color: transparent;
+  --color: var(--blood);
+  --box-shadow: inset 0 0 0 1px var(--blood);
+  --hover-bg: var(--blood-soft);
+  --hover-color: var(--blood-deep);
+}
+
+a:not(.btn) {
+  color: var(--blood-deep);
+}
+
+/* Focus ring and selected states pick up the accent. */
+:focus-visible {
+  outline-color: var(--blood);
+}
+
+.nav__link:hover,
+.nav a.active {
+  color: var(--blood);
+}
+
+.app-header {
+  border-bottom: 3px solid var(--blood);
+}
