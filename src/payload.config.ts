@@ -35,6 +35,16 @@ export default buildConfig({
       titleSuffix: '— Jeevanam Idukki',
       description: 'Admin for Jeevanam Idukki: manage donors, hospitals, blood requests and contact messages.',
       icons: [{ rel: 'icon', url: '/icon.png' }],
+      openGraph: {
+        description: 'Admin for Jeevanam Idukki: manage donors, hospitals, blood requests and contact messages.',
+        siteName: 'Jeevanam Idukki',
+        images: [{ url: 'https://www.jeevanamidukki.in/opengraph-image.png', width: 1200, height: 630 }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        description: 'Admin for Jeevanam Idukki: manage donors, hospitals, blood requests and contact messages.',
+        images: ['https://www.jeevanamidukki.in/opengraph-image.png'],
+      },
     },
     components: {
       graphics: {

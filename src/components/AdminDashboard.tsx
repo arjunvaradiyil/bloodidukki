@@ -39,7 +39,7 @@ export async function AdminDashboard({
   )
 
   return (
-    <div className="gutter">
+    <div className="gutter" style={{ boxSizing: 'border-box', paddingBlock: '2rem', paddingInline: 'clamp(1.25rem, 4vw, 2.5rem)' }}>
       <header style={{ margin: '0 0 2rem' }}>
         <p
           style={{
