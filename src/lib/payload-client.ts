@@ -13,7 +13,7 @@ export function describeError(error: unknown) {
     name: err?.name ?? typeof error,
     code: err?.code,
     message: String(err?.message ?? error)
-      .replace(/mongodb(\+srv)?:\/\/\S+/gi, 'mongodb://[redacted]')
+      .replace(/postgres(ql)?:\/\/\S+/gi, 'postgres://[redacted]')
       .slice(0, 300),
   }
 }
@@ -22,17 +22,6 @@ function startPayload() {
   if (!inflight) {
     inflight = (async () => {
       const payloadConfig = await config
-      console.info('Payload init', {
-        db: (payloadConfig.db as { name?: string }).name,
-        hasMongoUri: Boolean(process.env.MONGODB_URI),
-        hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
-        hasPostgresUrl: Boolean(
-          process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL,
-        ),
-        hasSecret: Boolean(process.env.PAYLOAD_SECRET),
-        vercel: Boolean(process.env.VERCEL),
-        useMongo: process.env.USE_MONGO ?? null,
-      })
       return getPayload({ config: payloadConfig })
     })().catch((error) => {
       console.error('Payload init failed', describeError(error))
@@ -69,8 +58,6 @@ export function withDeadline<T>(promise: Promise<T>, ms: number, label = 'Timed 
 }
 
 export const getPayloadClient = cache(async (): Promise<Payload | null> => {
-  if (!process.env.PAYLOAD_SECRET && !process.env.VERCEL) return null
-
   try {
     return await withTimeout(startPayload(), INIT_TIMEOUT_MS, null)
   } catch (error) {
@@ -80,11 +67,6 @@ export const getPayloadClient = cache(async (): Promise<Payload | null> => {
 })
 
 export async function getWritablePayload(): Promise<Payload | null> {
-  if (!process.env.PAYLOAD_SECRET && !process.env.VERCEL) {
-    console.error('Payload write client unavailable: PAYLOAD_SECRET is not set')
-    return null
-  }
-
   try {
     const payload = await withDeadline(startPayload(), WRITE_INIT_TIMEOUT_MS, 'Payload init timed out')
     if (!payload) inflight = null

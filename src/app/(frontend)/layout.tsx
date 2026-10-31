@@ -27,9 +27,22 @@ export const dynamic = 'force-dynamic'
 export const runtime = 'nodejs'
 export const maxDuration = 10
 
+const description = `${SITE_NAME.plain} connects donors with patients who need blood. Donate, find a hospital, or request support.`
+
 export const metadata: Metadata = {
   title: SITE_NAME.full,
-  description: `${SITE_NAME.plain} connects donors with patients who need blood. Donate, find a hospital, or request support.`,
+  description,
+  openGraph: {
+    title: SITE_NAME.full,
+    description,
+    siteName: SITE_NAME.plain,
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: SITE_NAME.full,
+    description,
+  },
 }
 
 export default async function RootLayout(props: { children: React.ReactNode }) {

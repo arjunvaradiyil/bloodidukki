@@ -9,7 +9,7 @@ export const Users: CollectionConfig = {
     useSessions: false,
     cookies: {
       sameSite: 'Lax',
-      secure: Boolean(process.env.VERCEL),
+      secure: process.env.NODE_ENV === 'production',
     },
     tokenExpiration: 60 * 60 * 24 * 7,
   },

@@ -1,112 +1,15 @@
-import { describeError, getWritablePayload } from '@/lib/payload-client'
-import { sqliteFilePath } from '@/lib/sqlite-path'
-import { appendSubmission, type FormKind } from '@/lib/submission-log'
+import { getWritablePayload } from '@/lib/payload-client'
 
-function text(value: unknown) {
-  return value == null ? null : String(value)
-}
+export type FormKind = 'donations' | 'blood-requests' | 'contact-messages'
 
-function requiredText(value: unknown) {
-  return String(value ?? '')
-}
-
-function requiredNumber(value: unknown) {
-  return Number(value)
-}
-
-async function persistPayloadSqlite(kind: FormKind, data: Record<string, unknown>) {
-  const { DatabaseSync } = (await import('node:sqlite')) as {
-    DatabaseSync: new (path: string) => {
-      prepare(sql: string): { run: (...args: unknown[]) => void }
-      close(): void
-    }
-  }
-
-  const now = new Date().toISOString()
-  const db = new DatabaseSync(sqliteFilePath())
-
-  try {
-    if (kind === 'donations') {
-      db.prepare(
-        `INSERT INTO donations (
-          name, district, block, mekhala, age, gender, blood_group, mobile, email,
-          address, donated_before, last_donation_date, preferred_date, updated_at, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      ).run(
-        requiredText(data.name),
-        requiredText(data.district || 'Idukki'),
-        requiredText(data.block),
-        requiredText(data.mekhala),
-        requiredNumber(data.age),
-        requiredText(data.gender),
-        requiredText(data.bloodGroup),
-        requiredText(data.mobile),
-        text(data.email),
-        requiredText(data.address),
-        requiredText(data.donatedBefore),
-        text(data.lastDonationDate),
-        requiredText(data.preferredDate),
-        now,
-        now,
-      )
-      return
-    }
-
-    if (kind === 'blood-requests') {
-      db.prepare(
-        `INSERT INTO blood_requests (
-          patient_name, blood_group, units, hospital, block, needed_by,
-          requester_name, mobile, notes, updated_at, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      ).run(
-        requiredText(data.patientName),
-        requiredText(data.bloodGroup),
-        requiredNumber(data.units),
-        requiredText(data.hospital),
-        requiredText(data.block),
-        requiredText(data.neededBy),
-        requiredText(data.requesterName),
-        requiredText(data.mobile),
-        text(data.notes),
-        now,
-        now,
-      )
-      return
-    }
-
-    db.prepare(
-      `INSERT INTO contact_messages (
-        name, mobile, email, message, updated_at, created_at
-      ) VALUES (?, ?, ?, ?, ?, ?)`,
-    ).run(
-      requiredText(data.name),
-      requiredText(data.mobile),
-      text(data.email),
-      requiredText(data.message),
-      now,
-      now,
-    )
-  } finally {
-    db.close()
-  }
-}
-
+/** Writes a website form submission to Payload. Throws on failure so callers can show an error. */
 export async function persistForm(kind: FormKind, data: Record<string, unknown>) {
-  await appendSubmission(kind, data)
+  const payload = await getWritablePayload()
+  if (!payload) throw new Error('Payload is not available')
 
-  try {
-    const payload = await getWritablePayload()
-    if (payload) {
-      await payload.create({
-        collection: kind,
-        data,
-        overrideAccess: true,
-      })
-      return
-    }
-  } catch (error) {
-    console.error('Payload form persist failed', describeError(error))
-  }
-
-  await persistPayloadSqlite(kind, data)
+  await payload.create({
+    collection: kind,
+    data: data as never,
+    overrideAccess: true,
+  })
 }

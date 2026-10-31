@@ -7,13 +7,6 @@ export const BloodRequests: CollectionConfig = {
     useAsTitle: 'patientName',
     defaultColumns: ['patientName', 'bloodGroup', 'hospital', 'neededBy', 'mobile', 'createdAt'],
     description: 'Emergency blood requests submitted from the website.',
-    components: {
-      views: {
-        list: {
-          Component: '/components/admin/SubmissionList#SubmissionList',
-        },
-      },
-    },
   },
   access: {
     create: () => true,
