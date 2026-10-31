@@ -1,4 +1,4 @@
-import { postgresAdapter } from '@payloadcms/db-postgres'
+import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -13,7 +13,6 @@ import { BloodRequests } from './collections/BloodRequests'
 import { ContactMessages } from './collections/ContactMessages'
 import { Header } from './globals/Header'
 import { Home } from './globals/Home'
-import { migrations } from './migrations'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -24,15 +23,6 @@ function requireEnv(name: string) {
   // `next build` imports this config without runtime secrets.
   if (process.env.NEXT_PHASE === 'phase-production-build') return `build-placeholder-${name}`
   throw new Error(`Missing required environment variable: ${name}`)
-}
-
-/** A linked Vercel Postgres/Neon store injects POSTGRES_URL, not DATABASE_URL. */
-function databaseUrl() {
-  for (const name of ['DATABASE_URL', 'POSTGRES_URL', 'POSTGRES_PRISMA_URL']) {
-    const value = process.env[name]?.trim()
-    if (value && /^postgres(ql)?:\/\//.test(value)) return value
-  }
-  return requireEnv('DATABASE_URL')
 }
 
 export default buildConfig({
@@ -59,12 +49,8 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: postgresAdapter({
-    pool: { connectionString: databaseUrl() },
-    migrationDir: path.resolve(dirname, 'migrations'),
-    // Schema changes ship as migrations, never auto-push. Pending ones run on boot in production.
-    push: false,
-    prodMigrations: migrations,
+  db: mongooseAdapter({
+    url: requireEnv('MONGODB_URI'),
   }),
   sharp,
   plugins: [],

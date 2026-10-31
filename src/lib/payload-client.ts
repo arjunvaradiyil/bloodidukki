@@ -13,7 +13,7 @@ export function describeError(error: unknown) {
     name: err?.name ?? typeof error,
     code: err?.code,
     message: String(err?.message ?? error)
-      .replace(/postgres(ql)?:\/\/\S+/gi, 'postgres://[redacted]')
+      .replace(/mongodb(\+srv)?:\/\/\S+/gi, 'mongodb://[redacted]')
       .slice(0, 300),
   }
 }
