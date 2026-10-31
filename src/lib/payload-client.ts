@@ -26,6 +26,9 @@ function startPayload() {
         db: (payloadConfig.db as { name?: string }).name,
         hasMongoUri: Boolean(process.env.MONGODB_URI),
         hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
+        hasPostgresUrl: Boolean(
+          process.env.POSTGRES_URL || process.env.POSTGRES_PRISMA_URL,
+        ),
         hasSecret: Boolean(process.env.PAYLOAD_SECRET),
         vercel: Boolean(process.env.VERCEL),
         useMongo: process.env.USE_MONGO ?? null,

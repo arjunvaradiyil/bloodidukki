@@ -1,10 +1,12 @@
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { sqliteAdapter } from '@payloadcms/db-sqlite'
+import { vercelPostgresAdapter } from '@payloadcms/db-vercel-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { postgresConnectionString } from './lib/database-url'
 import { sqliteFileUrl } from './lib/sqlite-path'
 
 import { Users } from './collections/Users'
@@ -55,6 +57,7 @@ function payloadSecret() {
 }
 
 const mongoEnabled = useMongo()
+const postgresUrl = postgresConnectionString()
 
 export default buildConfig({
   admin: {
@@ -80,23 +83,32 @@ export default buildConfig({
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  db: mongoEnabled && atlasUrl
-    ? mongooseAdapter({
-        url: atlasUrl,
-        connectOptions: {
-          serverSelectionTimeoutMS: 4000,
-          connectTimeoutMS: 4000,
-        },
-      })
-    : sqliteAdapter({
-        client: {
-          url: sqliteFileUrl(),
+  db: postgresUrl
+    ? vercelPostgresAdapter({
+        pool: {
+          connectionString: postgresUrl,
         },
         allowIDOnCreate: true,
-        busyTimeout: 5000,
-        push: false,
-        prodMigrations: migrations,
-      }),
+        // Empty Neon / Vercel Postgres needs tables on first boot.
+        push: true,
+      })
+    : mongoEnabled && atlasUrl
+      ? mongooseAdapter({
+          url: atlasUrl,
+          connectOptions: {
+            serverSelectionTimeoutMS: 4000,
+            connectTimeoutMS: 4000,
+          },
+        })
+      : sqliteAdapter({
+          client: {
+            url: sqliteFileUrl(),
+          },
+          allowIDOnCreate: true,
+          busyTimeout: 5000,
+          push: false,
+          prodMigrations: migrations,
+        }),
   sharp,
   plugins: [],
   onInit: async (payload) => {
