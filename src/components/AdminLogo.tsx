@@ -14,10 +14,14 @@ function DropBadge({ size }: { size: number }) {
         width: size,
       }}
     >
-      <svg width={size / 2} height={size / 2} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <svg width={size * 0.62} height={size * 0.62} viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path
-          d="M12 2.5C12 2.5 5.5 10.2 5.5 15.2a6.5 6.5 0 0 0 13 0C18.5 10.2 12 2.5 12 2.5Z"
+          d="M12 2C12 2 4.5 10.4 4.5 15.4a7.5 7.5 0 0 0 15 0C19.5 10.4 12 2 12 2Z"
           fill="#fff"
+        />
+        <path
+          d="M12 11.2 13.2 14.4 16.5 14.5 13.9 16.5 14.8 19.7 12 17.8 9.2 19.7 10.1 16.5 7.5 14.5 10.8 14.4Z"
+          fill={BLOOD}
         />
       </svg>
     </span>

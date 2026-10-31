@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { DropIcon, HeartIcon } from '@/components/Icons'
+import { HeartIcon, StarDropIcon } from '@/components/Icons'
 import { cn } from '@/lib/cn'
 import { defaultHeader } from '@/lib/defaults'
 
@@ -95,7 +95,7 @@ export function SiteHeader({
             }}
           >
             <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blood text-white">
-              <DropIcon className="block size-4" />
+              <StarDropIcon className="block size-5" />
             </span>
             <span className="hidden items-center whitespace-nowrap font-display text-[0.95rem] font-extrabold tracking-tight leading-none min-[22rem]:flex">
               <span className="text-[#1a1113]">{logoTextPrimary}</span>
