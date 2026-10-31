@@ -64,10 +64,13 @@ export async function AdminDashboard({
         style={{
           display: 'grid',
           gap: 16,
-          gridTemplateColumns: 'repeat(auto-fill, minmax(230px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 210px), 1fr))',
+          boxSizing: 'border-box',
           listStyle: 'none',
           margin: 0,
+          maxWidth: '100%',
           padding: 0,
+          width: '100%',
         }}
       >
         {collections.map((collection, index) => {
@@ -75,20 +78,22 @@ export async function AdminDashboard({
             typeof collection.labels?.plural === 'string' ? collection.labels.plural : collection.slug
           const count = counts[index]
           return (
-            <li key={collection.slug}>
+            <li key={collection.slug} style={{ minWidth: 0 }}>
               <a
                 href={`${adminRoute}/collections/${collection.slug}`}
                 style={{
                   background: 'var(--theme-elevation-50)',
                   border: '1px solid var(--theme-elevation-150)',
-                  borderLeft: '4px solid var(--theme-error-500, #e5484d)',
                   borderRadius: 12,
+                  boxShadow: 'inset 4px 0 0 var(--theme-error-500, #e5484d)',
+                  boxSizing: 'border-box',
                   color: 'var(--theme-text)',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 6,
                   minHeight: 120,
-                  padding: '1.1rem 1.2rem',
+                  overflow: 'hidden',
+                  padding: '1.1rem 1.2rem 1.1rem 1.5rem',
                   textDecoration: 'none',
                 }}
               >
