@@ -50,7 +50,7 @@ export function SiteHeader({
   }, [open])
 
   const ctaClass =
-    'inline-flex h-10 shrink-0 items-center justify-center gap-1 rounded-full bg-gradient-to-r from-blood-deep to-[#f26a2c] px-2.5 font-display text-[0.82rem] font-semibold text-white shadow-[0_8px_20px_rgba(225,29,46,0.28)] transition hover:brightness-110 sm:gap-1.5 sm:px-4 sm:text-[0.86rem]'
+    'inline-flex h-9 shrink-0 items-center justify-center gap-1 rounded-full bg-gradient-to-r from-blood-deep to-[#f26a2c] px-2.5 font-display text-[0.74rem] font-semibold text-white shadow-[0_8px_20px_rgba(225,29,46,0.28)] transition hover:brightness-110 sm:gap-1.5 sm:h-10 sm:px-4 sm:text-[0.86rem]'
 
   const navClass =
     'inline-flex h-10 items-center rounded-full px-2.5 text-[0.86rem] font-bold text-[#3a2428] transition-colors hover:bg-black/5 hover:text-blood xl:px-3 xl:text-[0.9rem]'
@@ -87,7 +87,7 @@ export function SiteHeader({
           <Link
             href="/"
             prefetch={false}
-            className="flex h-10 min-w-0 items-center gap-2 justify-self-start"
+            className="flex h-10 min-w-0 items-center gap-2 justify-self-start overflow-hidden"
             aria-label={`${logoTextPrimary} ${logoTextAccent}`}
             onClick={() => {
               setOpen(false)
@@ -97,9 +97,9 @@ export function SiteHeader({
             <span className="grid size-8 shrink-0 place-items-center rounded-full bg-blood text-white">
               <StarDropIcon className="block size-5" />
             </span>
-            <span className="hidden items-center whitespace-nowrap font-display text-[0.95rem] font-extrabold tracking-tight leading-none min-[22rem]:flex">
+            <span className="hidden items-center whitespace-nowrap font-display text-[0.8rem] font-extrabold tracking-tight leading-none min-[22rem]:flex sm:text-[0.95rem]">
               <span className="text-[#1a1113]">{logoTextPrimary}</span>
-              <span className="ml-1.5 text-blood">{logoTextAccent}</span>
+              <span className="ml-1 text-blood sm:ml-1.5">{logoTextAccent}</span>
             </span>
           </Link>
 
