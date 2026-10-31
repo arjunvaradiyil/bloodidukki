@@ -47,7 +47,7 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
         {pulse ? (
           <>
             <PulseMark className="pointer-events-none absolute top-1/2 left-2 w-[3.75rem] -translate-y-1/2 sm:left-3 sm:w-[5.5rem] lg:left-4 lg:w-[7.5rem]" />
-            <PulseMark className="pointer-events-none absolute top-1/2 right-2 w-[3.75rem] -translate-y-1/2 sm:right-3 sm:w-[5.5rem] lg:right-4 lg:w-[7.5rem]" />
+            <PulseMark className="pointer-events-none absolute top-1/2 right-2 w-[3.75rem] -translate-y-1/2 sm:right-3 sm:w-[5.5rem] lg:right-[10.5rem] lg:w-[7.5rem]" />
           </>
         ) : null}
         <div className="relative mx-auto min-w-0 px-16 text-center font-display text-[0.78rem] font-semibold tracking-wide text-white sm:px-24 sm:text-[0.88rem]">
@@ -69,7 +69,13 @@ export function SiteFooter({ pulse = false }: SiteFooterProps) {
           <p className="m-0 mt-1 text-[0.62rem] leading-snug font-medium tracking-[0.02em] text-balance text-white/85 sm:text-[0.72rem]">
             Website powered by DYFI Idukki District Professional Sub Committee · {SITE_NAME.plain}
           </p>
+          <p className="m-0 mt-1 text-[0.62rem] font-medium text-white/85 lg:hidden">
+            Developed by Faircode
+          </p>
         </div>
+        <p className="absolute top-1/2 right-4 m-0 hidden -translate-y-1/2 font-display text-[0.8rem] font-semibold tracking-wide whitespace-nowrap text-white lg:block">
+          Developed by Faircode
+        </p>
       </footer>
     </div>
   )
