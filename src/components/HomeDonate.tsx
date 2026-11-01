@@ -93,7 +93,7 @@ function PanelOverlay({
         <div
           className={
             center
-              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[12rem] max-sm:px-4 max-sm:pt-[5.75rem] max-sm:pb-[10rem]'
+              ? 'relative flex min-h-full items-center justify-center px-6 pt-[6.75rem] pb-[12rem] max-sm:flex-col max-sm:items-stretch max-sm:justify-start max-sm:px-4 max-sm:pt-[5rem] max-sm:pb-[6rem]'
               : 'relative mx-auto w-[min(1180px,calc(100%-2.5rem))] pt-[6.75rem] pb-[12rem] max-sm:w-[min(calc(100%-1.25rem),1180px)] max-sm:pt-[5.75rem] max-sm:pb-[10rem]'
           }
         >

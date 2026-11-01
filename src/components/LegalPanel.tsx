@@ -49,12 +49,12 @@ export function LegalPanel({ kind }: LegalPanelProps) {
     )
 
   return (
-    <article className="mx-auto max-w-[40rem] text-center">
-      <p className="m-0 mb-3 text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">Legal</p>
-      <h2 className="m-0 font-display text-[clamp(2.2rem,5vw,3.4rem)] font-extrabold tracking-tight leading-[1.08]">
+    <article className="mx-auto max-w-[40rem] text-center max-sm:text-left">
+      <p className="m-0 mb-2 text-[0.7rem] sm:mb-3 sm:text-[0.78rem] font-bold tracking-[0.16em] text-white/55 uppercase">Legal</p>
+      <h2 className="m-0 font-display text-[clamp(1.6rem,5vw,3.4rem)] font-extrabold tracking-tight leading-[1.1]">
         {title}
       </h2>
-      <div className="mt-6 space-y-4 text-[1.05rem] leading-[1.7] text-white/75">{body}</div>
+      <div className="mt-4 space-y-3 text-[0.88rem] leading-[1.6] sm:mt-6 sm:space-y-4 sm:text-[1.05rem] sm:leading-[1.7] text-white/75">{body}</div>
     </article>
   )
 }
